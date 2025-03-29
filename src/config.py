@@ -1,7 +1,7 @@
 # Variables file for configuration
 
 # App appearance
-APP_NOMBRE = "bootAPP"
+APP_NAME = "fastDATA"
 NAVBAR_BG_COLOR = "lightskyblue"
 
 # Database
