@@ -77,12 +77,12 @@ app, rt = fast_app(
 
 # Estos imports van aquí abajo porque es necesario que hayamos cargado
 # el archivo .env, para que esté accesible DATABASE_URL
-from src.controllers import home_controller
+from src.controllers import home_controller, login_controller
 # from src.auth.login import login_required, user_role_required
 # from src.auth import login_routes
 
 home_controller.init_routes(rt)
-
+login_controller.init_routes(rt)
 
 # Run the app
 if __name__ == "__main__":

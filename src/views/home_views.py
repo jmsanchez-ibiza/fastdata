@@ -1,4 +1,5 @@
 from fasthtml.common import *
+from src.auth.login import is_user_admin, is_user_logged
 from src.core.html_wrappers import *
 from src.config import NAVBAR_BG_COLOR, APP_NAME
 from src.utils.js_scripts import bootstrap_tooltips_js
@@ -32,106 +33,104 @@ def helper_modal():
 def menu(session):
     
     # Si no se ha hecho login, presentamos la web para visitantes
-    # if not is_user_logged(session):
+    if not is_user_logged(session):
 
-    ret = Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
-        Li(cls='nav-item')(
-            A('Clients', href='/clients', cls='nav-link text-primary', hx_get='/clients', hx_target='#main-content'),
-        ),
-        Li(cls='nav-item')(
-            A('Services', href='/services', cls='nav-link text-primary', hx_get='/services', hx_target='#main-content')
-        ),
-        Li(cls='nav-item')(
-            A('News', href='/news', cls='nav-link text-primary', hx_get='/news', hx_target='#main-content')
-        ),
-        Li(cls='nav-item')(
-            A('Contact', href='/contacs', cls='nav-link text-primary', hx_get='/contact', hx_target='#main-content')
-        ),
-    )
+        ret = Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
+            Li(cls='nav-item')(
+                A('Clients', href='/clients', cls='nav-link text-primary', hx_get='/clients', hx_target='#main-content'),
+            ),
+            Li(cls='nav-item')(
+                A('Services', href='/services', cls='nav-link text-primary', hx_get='/services', hx_target='#main-content')
+            ),
+            Li(cls='nav-item')(
+                A('News', href='/news', cls='nav-link text-primary', hx_get='/news', hx_target='#main-content')
+            ),
+            Li(cls='nav-item')(
+                A('Contact', href='/contacs', cls='nav-link text-primary', hx_get='/contact', hx_target='#main-content')
+            ),
+        )
 
-    # else:  # Tenemos login, ahora tratar el 'user-role'
-    #     ret =  Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
+    else:  # Tenemos login, ahora tratar el 'user-role'
+        ret =  Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
             
-    #         Li(cls='nav-item px-1')(
-    #             A(cls='nav-link text-primary icon-link icon-link-hover',
-    #                 hx_get='/usuarios', hx_target='#main-content',
-    #                 title='Gestión de Usuarios.\nGestión de la lista de usuarios de la aplicación.', data_bs_placement='bottom')(
-    #                     I(cls="bi-person-circle text-primary"),"Usuarios",
-    #                 ),
-    #         ) if is_user_admin(session) else "",
+            Li(cls='nav-item px-1')(
+                A(cls='nav-link text-primary icon-link icon-link-hover',
+                    hx_get='/usuarios', hx_target='#main-content',
+                    title='Gestión de Usuarios.\nGestión de la lista de usuarios de la aplicación.', data_bs_placement='bottom')(
+                        I(cls="bi-person-circle text-primary"),"Usuarios",
+                    ),
+            ) if is_user_admin(session) else "",
 
-    #         Li(cls='nav-item px-1')(
-    #             A(cls='nav-link text-primary icon-link icon-link-hover',
-    #                 hx_get='/clt', hx_target='#main-content',
-    #                 title='Gestión de Clientes.\nDesde aquí puedes ñadir nuevos clientes.', data_bs_placement='bottom')(
-    #                     I(cls="bi-person-lines-fill text-primary"),
-    #                     'Clientes',
-    #                 ),
-    #         ),
+            Li(cls='nav-item px-1')(
+                A(cls='nav-link text-primary icon-link icon-link-hover',
+                    hx_get='/clt', hx_target='#main-content',
+                    title='Gestión de Clientes.\nDesde aquí puedes ñadir nuevos clientes.', data_bs_placement='bottom')(
+                        I(cls="bi-person-lines-fill text-primary"),
+                        'Clientes',
+                    ),
+            ),
             
-    #         Li(cls='nav-item px-1')(
-    #             A(cls='nav-link text-primary icon-link icon-link-hover',
-    #                 hx_get='/obras', hx_target='#main-content',
-    #                 title='Gestión de Obras', data_bs_placement='bottom')(
-    #                     I(cls="bi-house-gear-fill text-primary"),
-    #                     'Obras',
-    #                 ),
-    #         ),
+            Li(cls='nav-item px-1')(
+                A(cls='nav-link text-primary icon-link icon-link-hover',
+                    hx_get='/obras', hx_target='#main-content',
+                    title='Gestión de Obras', data_bs_placement='bottom')(
+                        I(cls="bi-house-gear-fill text-primary"),
+                        'Obras',
+                    ),
+            ),
 
-    #         Li(cls='nav-item px-1')(
-    #             A(cls='nav-link text-primary icon-link icon-link-hover',
-    #                 hx_get='/contratos', hx_target='#main-content',
-    #                 title='Gestión de Contratos', data_bs_placement='bottom')(
-    #                     I(cls="bi-file-earmark-text-fill text-primary"),
-    #                     'Contratos',
-    #                 ),
-    #         ),
+            Li(cls='nav-item px-1')(
+                A(cls='nav-link text-primary icon-link icon-link-hover',
+                    hx_get='/contratos', hx_target='#main-content',
+                    title='Gestión de Contratos', data_bs_placement='bottom')(
+                        I(cls="bi-file-earmark-text-fill text-primary"),
+                        'Contratos',
+                    ),
+            ),
 
-    #         Li(cls='nav-item')(
-    #             A('Ventas', href='#', cls='nav-link text-primary', hx_get='/ventas', hx_target='#main-content')
-    #         ),
+            Li(cls='nav-item')(
+                A('Ventas', href='#', cls='nav-link text-primary', hx_get='/ventas', hx_target='#main-content')
+            ),
 
-    #         Li(cls='nav-item dropdown')(
-    #             A(data_bs_toggle='dropdown', aria_expanded='false', cls='nav-link dropdown-toggle text-primary')('Reports'),
-    #             Div(cls='dropdown-menu', style=f'background-color: {NAVBAR_BG_COLOR};')(
-    #                 A('Login', href='/login', cls='dropdown-item text-primary'),
-    #                 A('Action 2', href='#', cls='dropdown-item text-primary', hx_get='/pag2', hx_target='#main-content'),
-    #                 A('Forzar Logout', href='/logout', cls='dropdown-item text-primary'),
-    #                 Div(cls='dropdown-divider'),
-    #                 A('Admin', href='/admin', cls='dropdown-item text-primary'),
-    #             ),
-    #         ),
+            Li(cls='nav-item dropdown')(
+                A(data_bs_toggle='dropdown', aria_expanded='false', cls='nav-link dropdown-toggle text-primary')('Reports'),
+                Div(cls='dropdown-menu', style=f'background-color: {NAVBAR_BG_COLOR};')(
+                    A('Login', href='/login', cls='dropdown-item text-primary'),
+                    A('Action 2', href='#', cls='dropdown-item text-primary', hx_get='/pag2', hx_target='#main-content'),
+                    A('Forzar Logout', href='/logout', cls='dropdown-item text-primary'),
+                    Div(cls='dropdown-divider'),
+                    A('Admin', href='/admin', cls='dropdown-item text-primary'),
+                ),
+            ),
 
-    #     )
+        )
 
     return ret
 
 # Zona de Login
 def login_area(session):
-    # if is_user_logged(session):
-    #     # Tenemos Login, presentamos opción de Logout
-    #     ret = A(cls='nav-link icon-link icon-link-hover pr-2',
-    #         href="/logout",
-    #         data_bs_toggle='tooltip',
-    #         title='Cerrar la sessión', data_bs_placement='bottom')(
-    #             Button(cls="btn btn-danger p-1 m-0")(
-    #                 I(cls="bi-person-x fs-4 mx-1"),
-    #                 Span(f"{session['user']['username']}\n{session['user']['role']}"),
-    #             ),
-    #     )
-    # else:
-        
-    # No tenemos Login
-    ret = A(cls='nav-link icon-link icon-link-hover pr-2',
-        href="/login",
-        hx_get='/login', hx_target='#main-content',
-        data_bs_toggle='tooltip',
-        title='Users Login', data_bs_placement='bottom')(
-            Button(cls="btn btn-success p-1 m-0")(
-                I(cls="bi-person-check fs-4 mx-1"),
-                Span("Login"),
-            ),
-    )
+    if is_user_logged(session):
+        # Tenemos Login, presentamos opción de Logout
+        ret = A(cls='nav-link icon-link icon-link-hover pr-2',
+            href="/logout",
+            data_bs_toggle='tooltip',
+            title='Cerrar la sessión', data_bs_placement='bottom')(
+                Button(cls="btn btn-danger p-1 m-0")(
+                    I(cls="bi-person-x fs-4 mx-1"),
+                    Span(f"{session['user']['username']}\n{session['user']['role']}"),
+                ),
+        )
+    else: # No authenticated
+        ret = A(cls='nav-link icon-link icon-link-hover pr-2',
+            href="/login",
+            hx_get='/login', hx_target='#main-content',
+            data_bs_toggle='tooltip',
+            title='Users Login', data_bs_placement='bottom')(
+                Button(cls="btn btn-success p-1 m-0")(
+                    I(cls="bi-person-check fs-4 mx-1"),
+                    Span("Login"),
+                ),
+        )
     
     return ret
 

@@ -17,12 +17,6 @@ class HomeControler:
         self.rt("/services")(self.services)
         self.rt("/news")(self.news)
         self.rt("/contact")(self.contact)
-        # self.rt("/clients")(self.clients)
-        # self.rt("/clients_edit/{client_id}")(self.edit)
-        # self.rt("/clients_delete/{client_id}")(self.delete)
-        # self.rt("/client_post")(self.processs_post)
-        # self.rt("/client_filter")(self.filter)
-    
 
     def home(self, session, request):
         return home_page(session=session)
