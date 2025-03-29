@@ -1,7 +1,7 @@
 from datetime import datetime
 from fasthtml.common import *
 from src.auth.login import is_user_logged
-# from src.db.DAO_users import UserDAO
+from src.data.DAO_users import UserDAO
 from src.views.login_views import login_form
 
 def init_routes(rt):
@@ -29,25 +29,18 @@ class LoginController:
         next_url = user_data.get("next_url", "/")
         role = user_data.get("user_role", "GENERAL")
 
-        # user_dao = UserDAO()
-        # user = user_dao.get_user_by_username(username)
-        # # TODO: comprobar el password
-        # autenticado = user.check_password(password=password.lower().strip()) if user else False
-        autenticado = True
+        user_dao = UserDAO()
+        user = user_dao.get_user_by_username(username)
+        autenticado = user.check_password(password=password.lower().strip()) if user else False
                 
         if autenticado:
-            # user.last_login = datetime.now()
-            # user_dao.update(user)
+            user.last_login = datetime.now()
+            user_dao.update(user)
 
-            # session['user'] = {
-            #     "username": user.username,
-            #     "password": user.password,
-            #     "role": user.role
-            # }
             session['user'] = {
-                "username": "admin",
-                "password": "admin",
-                "role": "admin"
+                "username": user.username,
+                "password": user.password,
+                "role": user.role
             }
             add_toast(session, "Access granted.", "success")
             return RedirectResponse(next_url, status_code=303)
