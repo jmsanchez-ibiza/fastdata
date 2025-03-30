@@ -44,7 +44,7 @@ if "users" in to_be_created_list:
         register_count = dao.get_count()
         if table_name in tables_list and register_count > 0:
             # La tabla existe y tiene registros
-            input(f"La tabla {table_name} existe y tiene {register_count} registros.\nPulse una tecla para continuar...\no Ctrl-C para cancelar... ")
+            input(f"Table: {table_name} exists and contains {register_count} records.\Press any key to continue...\nor Ctrl-C to cancel... ")
 
         for i, user in enumerate(USERS):
             new_user = User()
@@ -62,7 +62,7 @@ if "users" in to_be_created_list:
             last_id, error = dao.create(new_user)
             print(f"{last_id=}, {error=}, {new_user=}")
 
-        print("Tabla <User> procesada.")
+        print("<User> processed Table.")
 
     except Exception as e:
         input(f"There was an error while creating the users.\n{e}\n\nPress any key to continue ...")
