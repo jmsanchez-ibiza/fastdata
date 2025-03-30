@@ -73,7 +73,7 @@ app, rt = fast_app(
 )
 
 # 📌 Add Toasts to app
-# setup_toasts(app, duration=5000)
+setup_toasts(app, duration=3000)
 
 # Estos imports van aquí abajo porque es necesario que hayamos cargado
 # el archivo .env, para que esté accesible DATABASE_URL

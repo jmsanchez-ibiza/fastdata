@@ -46,7 +46,7 @@ class LoginController:
             return RedirectResponse(next_url, status_code=303)
         
         # Not authenticated
-        add_toast(session, "Incorrect username or password.", "error")
+        add_toast(session, "Incorrect username or password.", "error", dismiss=True)
         return RedirectResponse("/", status_code=303)
 
     def logout(self, session, request):
