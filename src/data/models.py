@@ -3,7 +3,7 @@ import bcrypt
 from sqlalchemy import event, Column, Integer, String, Enum, Text, DateTime, Boolean, ForeignKey, Float
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
-from .validators import validate_email
+from .validators import validate_email, validate_nie_dni_cif
 from .database import Base
 
 # My Model Base class
@@ -105,3 +105,95 @@ class User(BaseModel):
         # Verificar si la contraseña coincide con el hash almacenado
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
    
+# CLIENTs model
+# ===================================================================================
+class Client(BaseModel):
+    __tablename__ = "clients"
+
+    id = Column(Integer, primary_key=True, index=True)
+    clcomer = Column(String(100), nullable=False, index=True)
+    clname = Column(String(100), nullable=False, index=True)
+    dni_nie_cif = Column(String(15), nullable=False)
+    email_heading = Column(String(100))
+    email_payment = Column(String(100), default=False)
+    email_payment_cc = Column(Text)
+    adress = Column(String(150))
+    cp = Column(String(10))
+    city = Column(String(50))
+    state = Column(String(50))
+    country = Column(String(2), nullable=False, default="ES")
+    language = Column(String(2), nullable=False, default="00")
+    payment_method = Column(String(2), nullable=False, default="01")
+    payment_responsible = Column(String(50))
+    notes = Column(Text)
+    # Relations
+    contacts = relationship("Contact", back_populates="cliente", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f'<Client {self.id} : {self.clcomer} - {self.clname}->{self.dni_nie_cif}>'
+
+    @property
+    def can_delete(self):
+        return len(self.contacts) == 0
+
+    def validate(self, accion, session):
+        """Validate the record according to the action (add or edit)"""
+        errors = {}
+        if len(self.clcomer) < 3: errors['clcomer'] = "The trade name must have at least 3 characters"
+        if len(self.clname) < 3: errors['clname'] = "The invoicing name must have at least 3 characters"
+        if not validate_nie_dni_cif(self.dni_nie_cif): errors["dni_nie_cif"] = "Invalid identification Dni/Nie/Cif"
+        if self.email_de_cobro and not validate_email(self.email_de_cobro): errors['email_de_cobro'] = "Invalid email address"
+        if self.email_de_cobro_cc and not validate_email(self.email_de_cobro_cc): errors['email_de_cobro_cc'] = "Invalid email address"
+
+
+        # TODO: User handling, to be global and automatically updated in before_insert or before_update  
+        # so the following code can be removed
+        # FORMAT: session['user'] =  {"username":"admin", "password": "1234", "role": "admin"}
+        if accion=="edit":
+            self.updated_by = session['user']['username'] if 'user' in session else ""
+        if accion=="add":
+            self.created_by = self.updated_by = session['user']['username'] if 'user' in session else ""
+
+        return errors
+
+    @property
+    def can_delete(self):
+        # Can be deleted if no associated contacts exist
+        return len(self.contactos) == 0
+
+class ClienteContacto(BaseModel):
+    __tablename__ = 'contacts'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    id_client = Column(Integer, ForeignKey('clients.id', ondelete="RESTRICT"))
+    contact_name = Column(String(100), nullable=False)
+    phone = Column(String(20))
+    mobile = Column(String(20))
+    email = Column(String(100))
+    notes = Column(Text)
+    created = Column(DateTime)
+    created_by = Column(String(50))
+    updated = Column(DateTime)
+    updated_by = Column(String(50))
+
+    client = relationship("Client", back_populates="contacts")
+
+    def __repr__(self):
+        return f'<Client {self.id_cliente} : {self.id} - {self.contact_name}->{self.client.clcomer}>'
+
+    def validate(self, accion, session):
+        """Validate the record according to the action (add or edit)"""
+
+        errors = {}
+        if len(self.contact_name) < 3: errors['contact_name'] = "The contact name must have at least 3 characters"
+        if self.email and not validate_email(self.email): errors['email'] = "Invalid email"
+
+        # TODO: User handling, to be global and automatically updated in before_insert or before_update  
+        # so the following code can be removed
+        # FORMAT: session['user'] =  {"username":"admin", "password": "1234", "role": "admin"}
+        if accion=="edit":
+            self.updated_by = session['user']['username'] if 'user' in session else ""
+        if accion=="add":
+            self.created_by = self.updated_by = session['user']['username'] if 'user' in session else ""
+
+        return errors

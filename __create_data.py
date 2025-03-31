@@ -25,7 +25,7 @@ dbase = Database()
 
 #  List of tables that will be created
 to_be_created_list = [
-    "users",
+    # "users",
     "--end--"
 ]
 
@@ -44,7 +44,7 @@ if "users" in to_be_created_list:
         register_count = dao.get_count()
         if table_name in tables_list and register_count > 0:
             # La tabla existe y tiene registros
-            input(f"Table: {table_name} exists and contains {register_count} records.\Press any key to continue...\nor Ctrl-C to cancel... ")
+            input(f"Table: {table_name} exists and contains {register_count} records.\nPress any key to continue...\nor Ctrl-C to cancel... ")
 
         for i, user in enumerate(USERS):
             new_user = User()

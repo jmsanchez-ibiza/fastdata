@@ -53,53 +53,33 @@ def menu(session):
     else:  # Tenemos login, ahora tratar el 'user-role'
         ret =  Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
             
-            Li(cls='nav-item px-1')(
-                A(cls='nav-link text-primary icon-link icon-link-hover',
-                    hx_get='/usuarios', hx_target='#main-content',
-                    title='Gestión de Usuarios.\nGestión de la lista de usuarios de la aplicación.', data_bs_placement='bottom')(
-                        I(cls="bi-person-circle text-primary"),"Usuarios",
+            Li(cls="nav-item px-1")(
+                A(cls="nav-link text-primary icon-link icon-link-hover",
+                    hx_get="/users", hx_target="#main-content",
+                    title="Gestión de Usuarios.\nManage users.\nManagement of the application's user list.", data_bs_placement='bottom')(
+                        I(cls="bi-person-circle text-primary"),"Users",
                     ),
-            ) if is_user_admin(session) else "",
+            ) if is_user_admin(session) else "",   # Only showed if user has admin role
 
             Li(cls='nav-item px-1')(
                 A(cls='nav-link text-primary icon-link icon-link-hover',
-                    hx_get='/clt', hx_target='#main-content',
-                    title='Gestión de Clientes.\nDesde aquí puedes ñadir nuevos clientes.', data_bs_placement='bottom')(
+                    hx_get='/clients', hx_target='#main-content',
+                    title='Manage Customers.\nManagement of your customers.', data_bs_placement='bottom')(
                         I(cls="bi-person-lines-fill text-primary"),
-                        'Clientes',
+                        'Customers',
                     ),
             ),
             
-            Li(cls='nav-item px-1')(
-                A(cls='nav-link text-primary icon-link icon-link-hover',
-                    hx_get='/obras', hx_target='#main-content',
-                    title='Gestión de Obras', data_bs_placement='bottom')(
-                        I(cls="bi-house-gear-fill text-primary"),
-                        'Obras',
-                    ),
-            ),
-
-            Li(cls='nav-item px-1')(
-                A(cls='nav-link text-primary icon-link icon-link-hover',
-                    hx_get='/contratos', hx_target='#main-content',
-                    title='Gestión de Contratos', data_bs_placement='bottom')(
-                        I(cls="bi-file-earmark-text-fill text-primary"),
-                        'Contratos',
-                    ),
-            ),
-
-            Li(cls='nav-item')(
-                A('Ventas', href='#', cls='nav-link text-primary', hx_get='/ventas', hx_target='#main-content')
-            ),
-
             Li(cls='nav-item dropdown')(
-                A(data_bs_toggle='dropdown', aria_expanded='false', cls='nav-link dropdown-toggle text-primary')('Reports'),
+                A(data_bs_toggle='dropdown', aria_expanded='false', cls='nav-link dropdown-toggle text-primary')('Dropdown'),
                 Div(cls='dropdown-menu', style=f'background-color: {NAVBAR_BG_COLOR};')(
-                    A('Login', href='/login', cls='dropdown-item text-primary'),
-                    A('Action 2', href='#', cls='dropdown-item text-primary', hx_get='/pag2', hx_target='#main-content'),
-                    A('Forzar Logout', href='/logout', cls='dropdown-item text-primary'),
+                    A('Action 1', href='#', cls='dropdown-item text-primary'),
+                    A('Action 2', href='#', cls='dropdown-item text-primary'),
+                    A('Action 3', href='#', cls='dropdown-item text-primary'),
                     Div(cls='dropdown-divider'),
-                    A('Admin', href='/admin', cls='dropdown-item text-primary'),
+                    A(cls='dropdown-item text-primary', href="#", title="Reports")(
+                            I(cls="bi-journals text-primary"),Span(cls="px-1")("Reports"),
+                        ),
                 ),
             ),
 
@@ -271,3 +251,4 @@ def contact_page(session):
         P("Need advice or want to request our services? Reach us by phone, email, or visit our offices. Our team will address all your inquiries with the personalized attention that defines us. Contact us for free estimates or any questions. For 30 years, we've been close to our clients, and your home will be our priority. We look forward to hearing from you!"),
     )
     return ct1
+
