@@ -127,7 +127,7 @@ class Client(BaseModel):
     payment_responsible = Column(String(50))
     notes = Column(Text)
     # Relations
-    contacts = relationship("Contact", back_populates="cliente", cascade="all, delete-orphan")
+    contacts = relationship("Contact", back_populates="client", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Client {self.id} : {self.clcomer} - {self.clname}->{self.dni_nie_cif}>'
@@ -161,7 +161,7 @@ class Client(BaseModel):
         # Can be deleted if no associated contacts exist
         return len(self.contactos) == 0
 
-class ClienteContacto(BaseModel):
+class Contact(BaseModel):
     __tablename__ = 'contacts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)

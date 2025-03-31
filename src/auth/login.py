@@ -71,5 +71,5 @@ def get_user_info(session):
 
 # Check if the user is 'ADMIN'
 def is_user_admin(session):
-    role = get_user_info(session)
-    return role['role'].lower() == "admin"
+    user = get_user_info(session)
+    return user['role'].lower() == "admin"

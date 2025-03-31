@@ -40,11 +40,26 @@ bootstrap_js = Script(
 # Bootstrap Icons (CDN)
 bootstrap_icons = Link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css')()
 
+# JQuery JS (CDN)
+jquery_js = Script(src='https://code.jquery.com/jquery-3.7.1.js')
+
+# Datatables.net
+# datatables_jquery_css = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css')
+# datatables_css = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net//css/jquery.dataTables.min.css')
+datatables_css = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css')
+# datatables_js = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js')
+datatables_js = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/2.2.2/js/dataTables.js')
+datatables_js_bs = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js')
 
 # Definir los headers de la app
 hdrs = [
     bootstrap_css,
     bootstrap_js,
+    jquery_js,
+    # datatables_jquery_css,
+    datatables_css,
+    datatables_js,
+    datatables_js_bs,
     Link(rel="icon", type="image/x-ico", href="img/recycle.png"),
     Link(rel='stylesheet', href='css/styles.css', type='text/css'),
     Link(rel='stylesheet', href='css/modales.css', type='text/css'),
@@ -77,12 +92,13 @@ setup_toasts(app, duration=3000)
 
 # Estos imports van aquí abajo porque es necesario que hayamos cargado
 # el archivo .env, para que esté accesible DATABASE_URL
-from src.controllers import home_controller, login_controller
+from src.controllers import home_controller, login_controller, users_controller
 # from src.auth.login import login_required, user_role_required
 # from src.auth import login_routes
 
 home_controller.init_routes(rt)
 login_controller.init_routes(rt)
+users_controller.init_routes(rt)
 
 # Run the app
 if __name__ == "__main__":

@@ -176,7 +176,12 @@ def body_content():
 def main_content():
     # Main Content
     return \
-    Div(id='main-content', cls='p-2 rounded', style='background-color: gainsboro;')(
+    Div(
+        id='main-content',
+        cls='p-2 rounded',
+        style='background-color: gainsboro;'
+        # style='background-color: white;'
+        )(
         body_content()
     )
 
