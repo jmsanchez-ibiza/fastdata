@@ -46,7 +46,8 @@ jquery_js = Script(src='https://code.jquery.com/jquery-3.7.1.js')
 # Datatables.net
 # datatables_jquery_css = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css')
 # datatables_css = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net//css/jquery.dataTables.min.css')
-datatables_css = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css')
+# datatables_css = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css')
+datatables_css_bs = Link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css')
 # datatables_js = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js')
 datatables_js = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/2.2.2/js/dataTables.js')
 datatables_js_bs = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js')
@@ -57,7 +58,8 @@ hdrs = [
     bootstrap_js,
     jquery_js,
     # datatables_jquery_css,
-    datatables_css,
+    # datatables_css,
+    datatables_css_bs,
     datatables_js,
     datatables_js_bs,
     Link(rel="icon", type="image/x-ico", href="img/recycle.png"),

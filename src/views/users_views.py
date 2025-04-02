@@ -520,9 +520,9 @@ def users_list(session, users, user_id:int=0, hx_swap_oob:bool=False):
     clients_table = Table(
         id="users-table",
         data_page_length="10",
-        cls="display compact",
+        cls="table table-striped table-hover display compact datatable",  # datatable, es la clase necesaria para transformarla en DataTable
         style="width: 100%; background-color: white;",
-        hx_swap_oob="true" if hx_swap_oob else "",
+        # hx_swap_oob="true" if hx_swap_oob else "",
         )(
         Thead(
             Tr(
@@ -545,61 +545,6 @@ def users_list(session, users, user_id:int=0, hx_swap_oob:bool=False):
                 Th(scope="col")("Role"),
             )
         ),
-        Script(code="""
-        document.body.addEventListener('htmx:afterSwap', (e) => {
-            if (e.target.querySelector('#users-table')) {
-                // alert("Actualizar DataTable");
-
-                // Destruir si ya fue inicializada
-                if ($.fn.DataTable.isDataTable('#users-table')) {
-                    $('#users-table').DataTable().destroy();
-                }
-
-                // Volver a inicializar
-                $('#users-table').DataTable({
-                    language: {
-                        decimal: ",",
-                        processing: "Procesando...",
-                        search: "Buscar:",
-                        lengthMenu: "Mostrar _MENU_",
-                        info: "Mostrando (_START_ a _END_) de _TOTAL_ registros",
-                        infoEmpty: "No hay datos que mostrar.",
-                        infoFiltered: "(filtrado de _MAX_ registros en total)",
-                        loadingRecords: "Cargando...",
-                        zeroRecords: "No se encontraron registros coincidentes",
-                        emptyTable: "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first: "<<",
-                            previous: "<",
-                            next: ">",
-                            last: ">>"
-                        },
-                        aria: {
-                            sortAscending: ": activar para ordenar la columna de manera ascendente",
-                            sortDescending: ": activar para ordenar la columna de manera descendente"
-                        }
-                    },
-                    layout: {
-                        topStart: 'info',
-                        topEnd: {
-                            search: {
-                                placeholder: 'Buscar ...'
-                            }
-                        },
-                        bottomStart: 'pageLength',
-                        bottomEnd: {
-                            paging: {
-                                firstLast: false
-                            },
-                        },
-                    }
-                });
-            }
-        });
-
-
-
-        """),
     )
 
     return clients_table
