@@ -1,26 +1,29 @@
-// Código JS
-// Esperar a que el DOM esté completamente cargado
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("✅ main.js cargado y DOM listo");
+    document.body.addEventListener('htmx:afterSwap', (e) => {
+        console.log("📦 Evento htmx:afterSwap recibido");
 
-    // Función para inicializar todas las tablas con clase 'datatable'
-    function initializeAllDataTables() {
+        const tables = document.querySelectorAll(".datatable");
         console.log("🔍 Buscando tablas .datatable...");
 
-        document.querySelectorAll('.datatable').forEach(table => {
-            console.log(`➡️ Inicializando DataTable para: #${table.id || '(sin id)'}`);
-
-            const $table = $(table);
-
-            // Destruir instancia previa si ya está inicializada
+        tables.forEach(table => {
+            console.log(`➡️ Inicializando DataTable para: #${table.id}`);
+            
             if ($.fn.DataTable.isDataTable(table)) {
-                console.log(`⚠️ Tabla ya inicializada. Destruyendo instancia existente.`);
-                $table.DataTable().destroy();
+                console.warn("⚠️ Tabla ya inicializada. Destruyendo instancia existente.");
+
+                // Destruir instancia anterior
+                $(table).DataTable().destroy();
+
+                // Clonar y reemplazar para limpiar restos de DataTable
+                const clonedTable = table.cloneNode(true);
+                table.parentElement.replaceChild(clonedTable, table);
+                table = clonedTable;
             }
 
-            // Inicializar nueva instancia
+            // Inicializar DataTable con estilos Bootstrap
+            const $table = $(table);
             $table.DataTable({
-                renderer: 'bootstrap',  // 🔥 Este es el cambio clave
+                renderer: 'bootstrap',
                 language: {
                     decimal: ",",
                     processing: "Procesando...",
@@ -46,25 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 layout: {
                     topStart: 'info',
                     topEnd: {
-                        search: {
-                            placeholder: 'Buscar ...'
-                        }
+                        search: { placeholder: 'Buscar ...' }
                     },
                     bottomStart: 'pageLength',
                     bottomEnd: {
                         paging: { firstLast: false }
-                    },
+                    }
                 }
             });
+
+            // ✅ Establecer el foco en el campo de búsqueda de DataTables v2
+            document.querySelector(`#${table.id}_wrapper .dt-search input`)?.focus();
         });
-    }
-
-    // Inicializar DataTables al cargar contenido nuevo con HTMX
-    document.body.addEventListener('htmx:afterSwap', (e) => {
-        console.log("📦 Evento htmx:afterSwap recibido");
-        initializeAllDataTables();
     });
-
-    // Inicializar DataTables en la primera carga de página
-    initializeAllDataTables();
 });

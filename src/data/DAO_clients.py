@@ -1,6 +1,6 @@
-from .models import Cliente
+from .models import Client
 from .table_DAO import TableDAO
 
-class ClienteDAO(TableDAO):
+class ClientDAO(TableDAO):
     def __init__(self):
-        super().__init__(Cliente)
+        super().__init__(Client)

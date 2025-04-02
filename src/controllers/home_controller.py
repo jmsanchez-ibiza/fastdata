@@ -13,7 +13,7 @@ class HomeControler:
     def init_routes(self):
         self.rt("/")(self.home)
         self.rt("/home")(self.home)
-        self.rt("/clients")(self.clients)
+        self.rt("/clients_page")(self.clients_page)
         self.rt("/services")(self.services)
         self.rt("/news")(self.news)
         self.rt("/contact")(self.contact)
@@ -21,7 +21,7 @@ class HomeControler:
     def home(self, session, request):
         return home_page(session=session)
     
-    def clients(self, session, request):
+    def clients_page(self, session, request):
         return clients_page(session=session)
     
     def services(self, session, request):

@@ -37,7 +37,7 @@ def menu(session):
 
         ret = Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
             Li(cls='nav-item')(
-                A('Clients', href='/clients', cls='nav-link text-primary', hx_get='/clients', hx_target='#main-content'),
+                A('Clients', href='/clients_page', cls='nav-link text-primary', hx_get='/clients_page', hx_target='#main-content'),
             ),
             Li(cls='nav-item')(
                 A('Services', href='/services', cls='nav-link text-primary', hx_get='/services', hx_target='#main-content')

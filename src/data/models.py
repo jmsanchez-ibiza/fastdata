@@ -142,8 +142,8 @@ class Client(BaseModel):
         if len(self.clcomer) < 3: errors['clcomer'] = "The trade name must have at least 3 characters"
         if len(self.clname) < 3: errors['clname'] = "The invoicing name must have at least 3 characters"
         if not validate_nie_dni_cif(self.dni_nie_cif): errors["dni_nie_cif"] = "Invalid identification Dni/Nie/Cif"
-        if self.email_de_cobro and not validate_email(self.email_de_cobro): errors['email_de_cobro'] = "Invalid email address"
-        if self.email_de_cobro_cc and not validate_email(self.email_de_cobro_cc): errors['email_de_cobro_cc'] = "Invalid email address"
+        if self.email_payment and not validate_email(self.email_payment): errors['email_payment'] = "Invalid email address"
+        if self.email_payment_cc and not validate_email(self.email_payment_cc): errors['email_payment_cc'] = "Invalid email address"
 
 
         # TODO: User handling, to be global and automatically updated in before_insert or before_update  
