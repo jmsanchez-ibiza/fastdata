@@ -49,8 +49,8 @@ class User(BaseModel):
     password_hash = Column( String(200), nullable=False )
     role = Column( String(15), primary_key=False, unique=False, nullable=False, default="general" )
 
-    active = Column( String(1), nullable=False, insert_default="Y" )
-    blocked = Column( String(1), nullable=False, default="N" )
+    active = Column( String(1), nullable=False, insert_default="y" )
+    blocked = Column( String(1), nullable=False, default="n" )
     last_login = Column( DateTime, index=False, unique=False, nullable=True, default=None )
     
     address = Column( String(240), nullable=True, default="" )

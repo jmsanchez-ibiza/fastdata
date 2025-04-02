@@ -55,4 +55,5 @@
   font-size: 0.70rem !important;
   padding: 0.25rem 0.15rem !important;
   margin: 0 2px !important;
+  z-index: 0;
 }

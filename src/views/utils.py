@@ -2,7 +2,7 @@ from fasthtml.common import *
 from src.core.html_wrappers import *
 
 def error_msg(msg):
-    return Div(P(cls="text-danger fw-bold")(msg))
+    return Div(cls="text-center btn btn-danger my-2")(P(cls="text-white fw-bold")(msg))
 
 def format_currency(num: float) -> str:
     """

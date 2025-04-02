@@ -2,8 +2,10 @@ from fasthtml.common import *
 from src.core.html_wrappers import *
 from src.auth.login import is_user_admin
 # from src.db.enums import NO_SI, SI_NO, USER_ROLE
+from src.data.enums import NO_YES, USER_ROLE, YES_NO
 from src.data.models import User
 from src.views.components.buttons import rowButton
+from src.views.components.forms import mk_input, mk_select
 # from src.views.components.buttons import rowButton
 # from src.views.components.forms import mk_input, mk_select
 
@@ -122,7 +124,7 @@ def form_usuarios_campos_base(usuario:User=None, accion:str="", errors:dict={}, 
             Div(cls="d-flex justify-content-end")(
                 Button(
                     cls="btn btn-secondary px-2 my-2 mx-1",
-                    type="submit",
+                    type="button",
                     hx_post="/usuario_post",
                     hx_target="#usuario-modals-here",
                     hx_vals={"accion2": "cancelar"},
@@ -131,7 +133,7 @@ def form_usuarios_campos_base(usuario:User=None, accion:str="", errors:dict={}, 
 
                 Button(
                     cls="btn btn-primary px-4 my-2 mx-1",
-                    type='submit',
+                    type='button',
                     hx_post="/usuario_post",
                     hx_target="#usuario-modals-here",
                     # onclick=f"scrollToId('id-{usuario.id if usuario and usuario.id else 0}')",
@@ -162,7 +164,7 @@ def form_usuarios(usuario:User=None, accion:str="editar", errors:dict={}, sessio
                             "Usuario: ",
                             Span(cls="text-primary fw-bold")(f"{usuario.id}/{usuario.user_code}- {usuario.username.strip()}")
                         ),
-                    Button(cls="btn-close", type="submit", hx_post="/usuario_post", hx_target="#usuario-modals-here", hx_vals={"accion2": "cancelar"}),
+                    Button(cls="btn-close", type="button", hx_post="/usuario_post", hx_target="#usuario-modals-here", hx_vals={"accion2": "cancelar"}),
                 ),
             ),
 
@@ -177,7 +179,7 @@ def form_usuarios(usuario:User=None, accion:str="editar", errors:dict={}, sessio
                         Button(id='usuarios-base-tab', data_bs_toggle='pill', data_bs_target='#usuarios-base', type='button', role='tab', aria_controls='usuarios-base', aria_selected='true', cls='nav-link active')('Datos')
                     ),
                     Li(role='presentation', cls='nav-item')(
-                        Button(id='base-tab2', data_bs_toggle='pill', data_bs_target='#datos-tab2', type='button', role='tab', aria_controls='datos-tab2', aria_selected='false', cls='nav-link')('Tab-2')
+                        Button(id='base-tab2', data_bs_toggle='pill', data_bs_target='#data-tab2', type='button', role='tab', aria_controls='data-tab2', aria_selected='false', cls='nav-link')('Tab-2')
                     ) if accion=="editar" else "",
                 ),
 
@@ -185,7 +187,7 @@ def form_usuarios(usuario:User=None, accion:str="editar", errors:dict={}, sessio
                     Div(id='usuarios-base', role='tabpanel', aria_labelledby='usuarios-base-tab', cls='tab-pane fade show active')(
                         form_usuarios_campos_base(usuario=usuario, accion=accion, errors=errors, session=session),
                     ),
-                    Div(id='datos-tab2', role='tabpanel', aria_labelledby='base-tab2', cls='tab-pane fade')(
+                    Div(id='data-tab2', role='tabpanel', aria_labelledby='base-tab2', cls='tab-pane fade')(
                         Span(cls="btn btn-danger")("EN CONSTRUCCIÓN (usuarios)"),
                     ),
                 ),
@@ -234,7 +236,7 @@ def form_usuarios_confirmacion(usuario:User=None, accion:str="", errors:dict={})
 
                     Button(
                         cls=f"btn btn-{'danger' if accion=='borrar' else 'primary'} px-4 my-2 mx-1",
-                        type='submit',
+                        type='button',
                         hx_post="/usuario_post",
                         hx_target="#usuario-modals-here",
                         hx_vals='{"accion": "borrar", "cliente_id": "'+str(usuario.id)+'"}',
@@ -249,7 +251,164 @@ def form_usuarios_confirmacion(usuario:User=None, accion:str="", errors:dict={})
     return form_confirmacion
 '''
 
-def users_navbar():
+def user_form_details(user:User=None, action:str="", errors:dict={}, session={}):
+    texto_boton_accion = "Add" if action=="add" else "Save"
+
+    return \
+    Form(id="user-details-form")(
+        # Hidden Inputs
+        Input(id="action", name="action", type="hidden", value=action),
+        Input(user_id="user_id", name="user_id", type="hidden", value=user.id if user else 0),
+
+        Div(cls="row")(
+            Div(cls="form-group col-md-6")(
+                mk_input(id="user_code", placeholder="User code", value="" if not user else user.user_code,
+                    errors=errors, autofocus=True, autocomplete=False,
+                    disabled=not is_user_admin(session),
+                ),
+            ),
+            Div(cls="form-group col-md-6")(
+                mk_input(id="username", placeholder="Username", value="" if not user else user.username,
+                    errors=errors, autofocus=False, autocomplete=False, capitalize=True,
+                    disabled=not is_user_admin(session),
+                    ),
+            ),
+        ),
+                            
+        Div(cls="row")(
+            Div(cls="form-group col-md-6")(
+                mk_input(id="name", placeholder="Name", value="" if not user else user.name, errors=errors, autofocus=False, autocomplete=False),
+            ),
+            Div(cls="form-group col-md-6")(
+                mk_input(id="email", placeholder="Email", value="" if not user else user.email, errors=errors, autofocus=False, autocomplete=False),
+            ),
+        ),
+
+        Div(cls="row")(
+            Div(cls="form-group col-md-6")(
+                mk_input(id="password", placeholder="Password", value="" if not user else user.password, errors=errors,
+                         autofocus=False, autocomplete=False,
+                         disabled=not is_user_admin(session)),
+            ),
+            Div(cls="form-group col-md-6")(
+                mk_select(
+                    id="role",
+                    placeholder="Role",
+                    data_value="" if not user else user.role,
+                    data_dict=USER_ROLE,
+                    errors=errors,
+                    autofocus=True,
+                    autocomplete=False,
+                    disabled=not is_user_admin(session)),
+            ),
+        ),
+
+        Div(cls="row")(
+            Div(cls="form-group col-md-4")(
+                mk_select(
+                    id="active",
+                    placeholder="Active?",
+                    data_value="" if not user else user.active,
+                    data_dict=YES_NO,
+                    errors=errors,
+                    autofocus=True,
+                    autocomplete=False,
+                    disabled=not is_user_admin(session)),
+            ),
+            Div(cls="form-group col-md-4")(
+                mk_select(
+                    id="blocked",
+                    placeholder="Blocked?",
+                    data_value="" if not user else user.blocked,
+                    data_dict=NO_YES,
+                    errors=errors,
+                    autofocus=True,
+                    autocomplete=False,
+                    disabled=not is_user_admin(session)),
+            ),
+            Div(cls="form-group col-md-4")(
+                mk_input(id="last_login", placeholder="Last login", value="" if not user else user.last_login, errors=errors, autofocus=False, autocomplete=False, disabled=True),
+            ),
+        ),
+
+        # Footer
+        Div(cls="row")(
+            Div(cls="d-flex justify-content-end")(
+                Button(
+                    cls="btn btn-secondary px-2 my-2 mx-1",
+                    type="button",
+                    hx_post="/users_post",
+                    hx_target="#user-modals-here",
+                    hx_vals={"action2": "cancel"},
+                    # onclick=f"scrollToId('id-{usuario.id if usuario and usuario.id else 0}')"
+                )("Cancel"),
+
+                Button(
+                    cls="btn btn-primary px-4 my-2 mx-1",
+                    type='button',
+                    hx_post="/users_post",
+                    hx_target="#user-modals-here",
+                    # onclick=f"scrollToId('id-{usuario.id if usuario and usuario.id else 0}')",
+                )(f"{texto_boton_accion.capitalize()}"),
+            ),
+        ),
+    ) # Fin Form
+
+def users_form(session={}, action:str="edit", user:User=None, errors:dict={}):
+    
+    if action=="add":
+        #  If there's no error, it's a new (empty) record  
+        #  If there's an error, the form needs to be filled out again
+        user = User() if not errors else user
+
+    form = \
+    Div(cls="boot-modal")(
+        Dialog(cls='container boot-modal-content', _open=True)(
+
+            # Header
+            Div(cls="boot-modal-header")(
+                Div(cls="d-flex justify-content-between m-3")(
+                    H3("NEW user:")
+                        if action=="add" 
+                        else
+                        H4(
+                            "User: ",
+                            Span(cls="text-primary fw-bold")(f"{user.id}/{user.user_code}- {user.username.strip()}")
+                        ),
+                    Button(cls="btn-close", type="button", hx_post="/users_post", hx_target="#user-modals-here", hx_vals={"accion2": "cancel"}),
+                ),
+            ),
+
+            # Body
+            Div(cls="boot-modal-body")(
+                Div(cls="nav")(
+                    Span(cls="card mb-2 p-2 bg-warning text-black")(errors['db'])
+                ) if "db" in errors else "",
+                
+                Ul(id='user-tab', role='tablist', cls='nav nav-pills mb-3')(
+                    Li(role='presentation', cls='nav-item')(
+                        Button(id='user-details-tab', data_bs_toggle='pill', data_bs_target='#users-details', type='button', role='tab', aria_controls='users-details', aria_selected='true', cls='nav-link active')('User details')
+                    ),
+                    Li(role='presentation', cls='nav-item')(
+                        Button(id='base-tab2', data_bs_toggle='pill', data_bs_target='#data-tab2', type='button', role='tab', aria_controls='data-tab2', aria_selected='false', cls='nav-link')('DataTab-2')
+                    ),
+                ),
+
+                Div(id='users-tabContent', cls='tab-content')(
+                    Div(id='users-details', role='tabpanel', aria_labelledby='user-details-tab', cls='tab-pane fade show active')(
+                        user_form_details(user=user, action=action, errors=errors, session=session)
+                    ),
+                    Div(id='data-tab2', role='tabpanel', aria_labelledby='base-tab2', cls='tab-pane fade')(
+                        Span(cls="btn btn-danger")("PAGE UNDER CONSTRUCTION (users)"),
+                    ),
+                ),
+            ),
+        )
+    )
+
+    return form
+
+def users_navbar(session):
     return \
     Div(
         Nav(
@@ -259,19 +418,24 @@ def users_navbar():
             force_style=True,
         )(
             H5("User's Table"),
-            Button(cls="btn btn-primary")(
-                (
-                    I(cls="bi-plus-circle text-white fs-5"),
-                    Span(cls="mx-1")("Add"),
-                )
+            Button(
+                cls="btn btn-primary",
+                hx_get="/users_add",
+                hx_trigger="click",
+                hx_target="#user-modals-here",
+
+            )(
+                I(cls="bi-plus-circle text-white fs-5"),
+                Span(cls="mx-1")("Add"),
             ),
-            Button(cls="btn btn-primary")(
+
+            Button(cls="btn btn-primary disabled")(
                 (
                     I(cls="bi-printer text-white fs-5"),
                     Span(cls="mx-1")("Reports"),
                 )
             ),
-            Button(cls="btn btn-primary")(
+            Button(cls="btn btn-primary disabled")(
                 (
                     I(cls="bi-folder-symlink text-white fs-5"),
                     Span(cls="mx-1")("Export"),
@@ -300,6 +464,7 @@ def user_row(session, user:User, user_id:int=0):
 
 def users_modal_confirmation(user:User=None, action:str="", errors:dict={}):
 
+    hx_vals_dict = {'action': 'delete', 'user_id': user.id if user else 0}
     form = \
     Div(cls="boot-modal")(
         Dialog(cls='container boot-modal-content', _open=True, style="width: 50%;")(
@@ -336,10 +501,10 @@ def users_modal_confirmation(user:User=None, action:str="", errors:dict={}):
 
                     Button(
                         cls=f"btn btn-{'danger' if action=='delete' else 'primary'} px-4 my-2 mx-1",
-                        type='submit',
+                        type='button',
                         hx_post="/users_post",
-                        hx_target="#users-modals-here",
-                        hx_vals='{"action": "delete", "user_id": "'+str(user.id)+'"}',
+                        hx_target="#user-modals-here",
+                        hx_vals=hx_vals_dict,
                         # onclick=f"scrollToId('id-{usuario.id if usuario and usuario.id else 0}')",
                     )("Add" if action=="add" else "Save" if action=="edit" else "Delete") if not "db" in errors else "",
                 ),
@@ -350,13 +515,14 @@ def users_modal_confirmation(user:User=None, action:str="", errors:dict={}):
 
     return form
 
-def users_list(session, users, user_id:int=0):
+def users_list(session, users, user_id:int=0, hx_swap_oob:bool=False):
 
     clients_table = Table(
-        id="clients-list",
+        id="users-table",
         data_page_length="10",
         cls="display compact",
-        style="width: 100%; background-color: white;"
+        style="width: 100%; background-color: white;",
+        hx_swap_oob="true" if hx_swap_oob else "",
         )(
         Thead(
             Tr(
@@ -380,46 +546,71 @@ def users_list(session, users, user_id:int=0):
             )
         ),
         Script(code="""
-        // var table = new DataTable('#clients-list', {
-        //    language: {
-        //        url: '//cdn.datatables.net/plug-ins/2.2.2/i18n/es-ES.json',
-        //    },
-        //});
-               
-        // --> Using jQuery
-        $(document).ready( function () {
-           $('#clients-list').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/2.2.2/i18n/es-ES.json',
-                    decimal: ",",
-                },
+        document.body.addEventListener('htmx:afterSwap', (e) => {
+            if (e.target.querySelector('#users-table')) {
+                // alert("Actualizar DataTable");
 
-                layout: {
-                    topStart: 'info',
-                    topEnd: {
-                        search: {
-                            placeholder: 'Buscar ...'
+                // Destruir si ya fue inicializada
+                if ($.fn.DataTable.isDataTable('#users-table')) {
+                    $('#users-table').DataTable().destroy();
+                }
+
+                // Volver a inicializar
+                $('#users-table').DataTable({
+                    language: {
+                        decimal: ",",
+                        processing: "Procesando...",
+                        search: "Buscar:",
+                        lengthMenu: "Mostrar _MENU_",
+                        info: "Mostrando (_START_ a _END_) de _TOTAL_ registros",
+                        infoEmpty: "No hay datos que mostrar.",
+                        infoFiltered: "(filtrado de _MAX_ registros en total)",
+                        loadingRecords: "Cargando...",
+                        zeroRecords: "No se encontraron registros coincidentes",
+                        emptyTable: "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first: "<<",
+                            previous: "<",
+                            next: ">",
+                            last: ">>"
+                        },
+                        aria: {
+                            sortAscending: ": activar para ordenar la columna de manera ascendente",
+                            sortDescending: ": activar para ordenar la columna de manera descendente"
                         }
                     },
-                    bottomStart: 'pageLength',
-                    bottomEnd: {
-                        paging: {
-                            firstLast: false
+                    layout: {
+                        topStart: 'info',
+                        topEnd: {
+                            search: {
+                                placeholder: 'Buscar ...'
+                            }
                         },
-                    },
-                }
-            });
-        } );
+                        bottomStart: 'pageLength',
+                        bottomEnd: {
+                            paging: {
+                                firstLast: false
+                            },
+                        },
+                    }
+                });
+            }
+        });
+
+
+
         """),
     )
 
     return clients_table
 
-def users_page(session, users, user_id:int=0):
+def users_page(session, users, user_id:int=0, hx_swap_oob:bool=False):
     return \
     Div(
-        users_navbar(),
-        Div(id="user-modals-here"),
-        users_list(session, users, user_id=user_id),
+        users_navbar(session),
+        Div(id="user-modals-here", hx_swap_oob="true" if hx_swap_oob else "")(""),
+        Div(id="users-list", hx_swap_oob="true" if hx_swap_oob else "")(
+            users_list(session, users, user_id=user_id),
+        )
     )
 
