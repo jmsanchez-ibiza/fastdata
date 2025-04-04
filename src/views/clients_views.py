@@ -92,7 +92,18 @@ def clients_form(session={}, action: str = "edit", client: Client = None, errors
                     type='button',
                     hx_post="/clients_post",
                     hx_target="#client-modals-here",
-                )(texto_boton_accion),
+                    hx_indicator="#spinner",
+                )(
+                    Div(cls="d-flex align-items-center gap-2")(
+                        texto_boton_accion,
+                        Img(
+                            id="spinner",
+                            cls="my-indicator align-self-center",  # Alineación vertical
+                            src="img/ring-spinner.svg",
+                            style="height: 1.5em;"  # Alineado con el tamaño del texto
+                        ),
+                    ),
+                )
             ),
         ),
     )

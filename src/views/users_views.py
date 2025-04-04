@@ -107,8 +107,18 @@ def user_form_details(user:User=None, action:str="", errors:dict={}, session={})
                     type='button',
                     hx_post="/users_post",
                     hx_target="#user-modals-here",
-                    # onclick=f"scrollToId('id-{usuario.id if usuario and usuario.id else 0}')",
-                )(f"{texto_boton_accion.capitalize()}"),
+                    hx_indicator="#spinner",
+                )(
+                    Div(cls="d-flex align-items-center gap-2")(
+                        f"{texto_boton_accion.capitalize()}",
+                        Img(
+                            id="spinner",
+                            cls="my-indicator align-self-center",  # Alineación vertical
+                            src="img/ring-spinner.svg",
+                            style="height: 1.5em;"  # Alineado con el tamaño del texto
+                        ),
+                    ),
+                )
             ),
         ),
     ) # Fin Form

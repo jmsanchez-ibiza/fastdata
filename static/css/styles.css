@@ -33,6 +33,18 @@
 }
 
 
+/* PARA MOSTRAR/OCULTAR EL INDICATOR SEGÚN EL ESTADO DEL REQUEST */
+.my-indicator{
+  display:none;
+}
+.htmx-request .my-indicator{
+  display:block;
+}
+.htmx-request.my-indicator{
+  display:block;
+}
+
+
 /* Ajustes personalizados para DataTables (v2 + Bootstrap 5) */
 /* Clases: .dt-length, .dt-search, .dt-info, .dt-paging, .dt-paging-button */
 /* 1. Info: más grande y bajado un poco */
