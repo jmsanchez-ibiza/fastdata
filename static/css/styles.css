@@ -57,3 +57,8 @@
   margin: 0 2px !important;
   z-index: 0;
 }
+
+/* 5. Cambiar color de fondo de los rows de cabecera */
+.dt-orderable-asc {
+  background-color: #d5eaff !important;
+}

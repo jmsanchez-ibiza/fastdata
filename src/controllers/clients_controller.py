@@ -81,8 +81,7 @@ class ClientsController:
             if not client_id:
                 errors["db"] = f"ERROR-DB: Deleting client: {err}"
 
-        elif action == "cancel":
-            return Div(id="client-modals-here")("")
+        # Si hubiera habido accion2 == "cancel" ya hubiéramos llegado aquí
 
         if errors:
             client = client or Client()

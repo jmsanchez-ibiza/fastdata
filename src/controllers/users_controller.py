@@ -89,10 +89,8 @@ class UsersController:
             if not user_id:
                 errors["db"] = f"ERROR-DB: Error al borrar el usuario: {err}"
 
-        elif action == "cancel":
-            # Vaciar el contenedor del modal
-            return Div(id="user-modals-here")("")
-        
+        # Si hubiera habido accion2 == "cancel" ya hubiéramos llegado aquí
+      
         if errors:
             user = user or User()
             return users_form(session=session, action=action, user=user, errors=errors)
