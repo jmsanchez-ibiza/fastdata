@@ -1,5 +1,3 @@
-// static/js/main.js
-// Este archivo JavaScript se carga en todas las páginas de la aplicación
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener('htmx:afterSwap', (e) => {
         console.log("📦 Evento htmx:afterSwap recibido");
@@ -13,16 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if ($.fn.DataTable.isDataTable(table)) {
                 console.warn("⚠️ Tabla ya inicializada. Destruyendo instancia existente.");
 
-                // Destruir instancia anterior
                 $(table).DataTable().destroy();
 
-                // Clonar y reemplazar para limpiar restos de DataTable
                 const clonedTable = table.cloneNode(true);
                 table.parentElement.replaceChild(clonedTable, table);
                 table = clonedTable;
             }
 
-            // Inicializar DataTable con estilos Bootstrap
             const $table = $(table);
             $table.DataTable({
                 renderer: 'bootstrap',
@@ -58,14 +53,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         paging: { firstLast: false }
                     }
                 },
-                rowId: 'id',  // opcional, si usas IDs únicos
-                createdRow: function (row, data, dataIndex) {
-                    // Forzar reactivación HTMX en botones dentro de la fila
-                    htmx.process(row);
+                initComplete: function () {
+                    htmx.process(this.api().table().node());
                 },
+                drawCallback: function () {
+                    const rows = this.api().rows({ page: 'current' }).nodes();
+                    rows.each(function (row) {
+                        htmx.process(row); // 🔥 esto reactiva los botones en cada fila visible
+                    });
+                }
             });
 
-            // ✅ Establecer el foco en el campo de búsqueda de DataTables v2
+            // Foco en campo de búsqueda
             document.querySelector(`#${table.id}_wrapper .dt-search input`)?.focus();
         });
     });
