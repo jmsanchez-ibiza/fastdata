@@ -7,6 +7,10 @@ from src.data.models import Client
 from src.data.DAO_clients import ClientDAO
 from src.views.utils import error_msg
 from src.views.clients_views import clients_form, clients_modal_confirmation, clients_page
+# Excel exports
+import io
+from openpyxl import Workbook
+from starlette.responses import Response  # Compatible con Fasthtml, que usa Starlette debajo
 
 def init_routes(rt):
     ClientsController(rt)
@@ -23,6 +27,7 @@ class ClientsController:
         self.rt("/clients_edit/{client_id}")(login_required(self.form_edit))
         self.rt("/clients_delete/{client_id}")(login_required(self.form_delete))
         self.rt("/clients_post")(self.process_post)
+        self.rt("/clients_export_excel")(login_required(self.export_excel))
 
     def list(self, session, request):
         try:
@@ -92,3 +97,30 @@ class ClientsController:
 
         clients = client_dao.get_all(order_by={"clcomer": "ASC"})
         return clients_page(session=session, clients=clients, client_id=client_id, hx_swap_oob=True)
+
+    def export_excel(self, session, request):
+        clients = ClientDAO().get_all()
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Clientes"
+
+        # Cabeceras
+        headers = ["ID", "Código", "Nombre"]
+        ws.append(headers)
+
+        # Datos
+        for c in clients:
+            ws.append([c.id, c.clcomer, c.clname])
+
+        # Guardar a memoria
+        output = io.BytesIO()
+        wb.save(output)
+        output.seek(0)
+
+        return Response(
+            content=output.read(),
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            headers={"Content-Disposition": "attachment; filename=clientes.xlsx"}
+        )
+

@@ -173,8 +173,12 @@ def clients_navbar(session):
             Button(cls="btn btn-primary disabled")(
                 I(cls="bi-printer text-white fs-5"), Span(cls="mx-1")("Reports")
             ),
-            Button(cls="btn btn-primary disabled")(
-                I(cls="bi-folder-symlink text-white fs-5"), Span(cls="mx-1")("Export")
+            A(
+                href="/clients_export_excel",
+                cls="btn btn-success",
+            )(
+                I(cls="bi bi-file-earmark-excel text-white fs-5"),
+                Span(cls="mx-1")("Export"),
             ),
         )
     )

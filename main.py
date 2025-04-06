@@ -52,6 +52,11 @@ datatables_css_bs = Link(rel='stylesheet', type='text/css', href='https://cdn.da
 datatables_js = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/2.2.2/js/dataTables.js')
 datatables_js_bs = Script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js')
 
+datatables_jzcip = Script(src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js')
+datatables_datatables_buttons = Script(src='https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js')
+datatables_buttons_bs = Script(src='https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js')
+datatables_buttons = Script(src='https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js')
+
 # Definir los headers de la app
 hdrs = [
     bootstrap_css,
@@ -62,6 +67,10 @@ hdrs = [
     datatables_css_bs,
     datatables_js,
     datatables_js_bs,
+    datatables_jzcip,
+    datatables_datatables_buttons,
+    datatables_buttons_bs,
+    datatables_buttons,
     Link(rel="icon", type="image/x-ico", href="img/recycle.png"),
     Link(rel='stylesheet', href='css/styles.css', type='text/css'),
     Link(rel='stylesheet', href='css/modales.css', type='text/css'),

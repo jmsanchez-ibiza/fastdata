@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 layout: {
                     topStart: 'info',
                     topEnd: {
-                        search: { placeholder: 'Buscar ...' }
+                        search: { placeholder: 'Buscar ...' },
                     },
                     bottomStart: 'pageLength',
                     bottomEnd: {
@@ -61,7 +61,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     rows.each(function (row) {
                         htmx.process(row); // 🔥 esto reactiva los botones en cada fila visible
                     });
-                }
+                },
+                // dom: 'Bfrtip',
+                // buttons: [
+                //     {
+                //         extend: 'excelHtml5',
+                //         text: '<i class="bi bi-file-earmark-excel"></i> Exportar visibles',
+                //         className: 'btn btn-success btn-sm',
+                //         exportOptions: {
+                //             modifier: {
+                //                 page: 'current'  // Solo exporta los visibles
+                //             }
+                //         }
+                //     }
+                // ],
             });
 
             // Foco en campo de búsqueda
