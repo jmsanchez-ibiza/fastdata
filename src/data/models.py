@@ -179,7 +179,7 @@ class Contact(BaseModel):
     client = relationship("Client", back_populates="contacts")
 
     def __repr__(self):
-        return f'<Client {self.id_cliente} : {self.id} - {self.contact_name}->{self.client.clcomer}>'
+        return f'<Client {self.id_client} : {self.id} - {self.contact_name}>'
 
     def validate(self, accion, session):
         """Validate the record according to the action (add or edit)"""

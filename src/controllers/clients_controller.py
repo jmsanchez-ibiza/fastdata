@@ -26,7 +26,10 @@ class ClientsController:
 
     def list(self, session, request):
         try:
-            clients = ClientDAO().get_all(order_by={"clcomer": "ASC"})
+            clients = ClientDAO().get_all(
+                load_relationships=True,
+                order_by={"clcomer": "ASC"}
+            )
             return clients_page(session, clients)
         except Exception as e:
             return error_msg(f"ERROR: {e}")

@@ -172,6 +172,7 @@ def users_form(session={}, action:str="edit", user:User=None, errors:dict={}):
                     ),
                 ),
             ),
+
         )
     )
 
@@ -289,7 +290,7 @@ def users_modal_confirmation(user:User=None, action:str="", errors:dict={}):
 
 def users_list(session, users, user_id:int=0, hx_swap_oob:bool=False):
 
-    clients_table = Table(
+    return Table(
         id="users-table",
         data_page_length="10",
         cls="table table-striped table-hover display compact datatable",  # datatable, es la clase necesaria para transformarla en DataTable
@@ -317,9 +318,7 @@ def users_list(session, users, user_id:int=0, hx_swap_oob:bool=False):
                 Th(scope="col", cls="dt-orderable-asc")("Role"),
             )
         ),
-    )
-
-    return clients_table
+    ) if users else Div(H5(cls="text-center text-danger pt-3")("No users found"))
 
 def users_page(session, users, user_id:int=0, hx_swap_oob:bool=False):
     return \

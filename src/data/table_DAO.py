@@ -108,7 +108,7 @@ class TableDAO:
             
             return query.all()
 
-    def get_by_id(self, entity_id: int, cargar_relaciones: bool = False) -> Optional[BaseModel]:
+    def get_by_id(self, entity_id: int, cargar_relaciones: bool = True) -> Optional[BaseModel]:
         """
         Retrieve a record by its ID.
 

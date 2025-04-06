@@ -3,14 +3,13 @@ from src.core.html_wrappers import *
 from src.data.models import Client
 from src.views.components.buttons import rowButton
 from src.views.components.forms import mk_input
+from src.views.contacts_views import contacts_page
 
-def clients_form(session={}, action: str = "edit", client: Client = None, errors: dict = {}):
-    if action == "add" and not errors:
-        client = Client()
 
-    texto_boton_accion = "Add" if action == "add" else "Save"
-
-    form = Form(id="client-details-form")(
+def client_details_form(session={}, action: str = "edit", client: Client = None, errors: dict = {}):
+    texto_boton_accion = "Add" if action == "add" else "Save"    
+    
+    return Form(id="client-details-form")(
         Input(name="action", type="hidden", value=action),
         Input(name="client_id", type="hidden", value=client.id if client else 0),
 
@@ -108,17 +107,50 @@ def clients_form(session={}, action: str = "edit", client: Client = None, errors
         ),
     )
 
-    return Div(cls="boot-modal")(
+def clients_form(session={}, action: str = "edit", client: Client = None, errors: dict = {}):
+    if action == "add" and not errors:
+        client = Client()
+
+    page =  Div(cls="boot-modal")(
         Dialog(cls='container boot-modal-content', _open=True)(
+
+            # Header
             Div(cls="boot-modal-header")(
                 Div(cls="d-flex justify-content-between m-3")(
-                    H3("NEW client:") if action == "add" else H4("Client: ", Span(cls="text-primary fw-bold")(f"{client.id}/{client.clcomer}")),
+                    H3("NEW client:") if action == "add" else H4("Client: ", Span(cls="text-primary fw-bold")(f"{client.id:05}-{client.clcomer}")),
                     Button(cls="btn-close", type="button", hx_post="/clients_post", hx_target="#client-modals-here", hx_vals={"accion2": "cancel"}),
                 ),
             ),
-            Div(cls="boot-modal-body")(form)
+
+            # Body
+            Div(cls="boot-modal-body")(
+                Div(cls="nav")(
+                    Span(cls="card mb-2 p-2 bg-warning text-black")(errors['db'])
+                ) if "db" in errors else "",
+                
+                Ul(id='client-tab', role='tablist', cls='nav nav-pills mb-3')(
+                    Li(role='presentation', cls='nav-item')(
+                        Button(id='client-details-tab', data_bs_toggle='pill', data_bs_target='#clients-details', type='button', role='tab', aria_controls='clients-details', aria_selected='true', cls='nav-link active')('Client details')
+                    ),
+                    Li(role='presentation', cls='nav-item')(
+                        Button(id='contacs-tab', data_bs_toggle='pill', data_bs_target='#contacts-tab', type='button', role='tab', aria_controls='contatcs-tab2', aria_selected='false', cls='nav-link')('Contacts')
+                    ),
+                ),
+
+                Div(id='clients-tabContent', cls='tab-content')(
+                    Div(id='clients-details', role='tabpanel', aria_labelledby='client-details-tab', cls='tab-pane fade show active')(
+                        client_details_form(client=client, action=action, errors=errors, session=session)
+                    ),
+                    Div(id='contacts-tab', role='tabpanel', aria_labelledby='contatcs-tab', cls='tab-pane fade')(
+                        contacts_page(session=session, client_id=client.id),
+                    ),
+                ),
+            ),
+             
         )
     )
+
+    return page
 
 def clients_navbar(session):
     return Div(
@@ -223,7 +255,7 @@ def clients_list(session, clients, client_id: int = 0):
                 Th(scope="col", cls="dt-orderable-asc")("Nombre"),
             )
         ),
-    )
+    ) if clients else Div(H5(cls="text-center text-danger pt-3")("No clients found"))
 
 def clients_page(session, clients, client_id: int = 0, hx_swap_oob: bool = False):
     return Div(
