@@ -232,30 +232,35 @@ def clients_modal_confirmation(client: Client = None, action: str = "", errors: 
     )
 
 def clients_list(session, clients, client_id: int = 0):
-    return Table(
-        id="clients-table",
-        data_page_length="10",
-        cls="table table-striped table-hover display compact datatable",
-        style="width: 100%; background-color: white;",
-    )(
-        Thead(
-            Tr(
-                Th(scope="col")("🛠️"),
-                Th(scope="col")("ID"),
-                Th(scope="col")("Código"),
-                Th(scope="col")("Nombre"),
-            )
-        ),
-        Tbody()( *[client_row(session, client, client_id=client_id) for client in clients] ),
-        Tfoot(
-            Tr(
-                Th(scope="col", cls="dt-orderable-asc")("🛠️"),
-                Th(scope="col", cls="dt-orderable-asc")("ID"),
-                Th(scope="col", cls="dt-orderable-asc")("Código"),
-                Th(scope="col", cls="dt-orderable-asc")("Nombre"),
-            )
-        ),
-    ) if clients else Div(H5(cls="text-center text-danger pt-3")("No clients found"))
+    return Div(
+        Table(
+            id="clients-table",
+            data_page_length="10",
+            cls="table table-striped table-hover display compact datatable",
+            style="width: 100%; background-color: white;",
+        )(
+            Thead(
+                Tr(
+                    Th(scope="col")("🛠️"),
+                    Th(scope="col")("ID"),
+                    Th(scope="col")("Código"),
+                    Th(scope="col")("Nombre"),
+                )
+            ),
+            Tbody()( *[client_row(session, client, client_id=client_id) for client in clients] ),
+            Tfoot(
+                Tr(
+                    Th(scope="col", cls="dt-orderable-asc")("🛠️"),
+                    Th(scope="col", cls="dt-orderable-asc")("ID"),
+                    Th(scope="col", cls="dt-orderable-asc")("Código"),
+                    Th(scope="col", cls="dt-orderable-asc")("Nombre"),
+                )
+            ),
+        ) if clients else Div(H5(cls="text-center text-danger pt-3")("No clients found")),
+    
+        # Para añadir un poco de espacio al final de la tabla que lo tape el footer
+        Div(cls="", style="padding: 30px;")(""),
+    )
 
 def clients_page(session, clients, client_id: int = 0, hx_swap_oob: bool = False):
     return Div(

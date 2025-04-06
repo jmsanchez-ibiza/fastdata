@@ -1,3 +1,5 @@
+// static/js/main.js
+// Este archivo JavaScript se carga en todas las páginas de la aplicación
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener('htmx:afterSwap', (e) => {
         console.log("📦 Evento htmx:afterSwap recibido");
@@ -55,7 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     bottomEnd: {
                         paging: { firstLast: false }
                     }
-                }
+                },
+                rowId: 'id',  // opcional, si usas IDs únicos
+                createdRow: function (row, data, dataIndex) {
+                    // Forzar reactivación HTMX en botones dentro de la fila
+                    htmx.process(row);
+                },
             });
 
             // ✅ Establecer el foco en el campo de búsqueda de DataTables v2
