@@ -80,3 +80,14 @@ def model_to_dict(model):
         result[key] = value
     return result
 
+def to_dict_list(query_result):
+    """Convert a SQLAlchemy query result into a list of dictionaries"""
+    return [
+        {key: value for key, value in row.__dict__.items() if not key.startswith('_')}
+        for row in query_result
+    ]
+
+def get_model_columns(model):
+    """Get the column names of a SQLAlchemy model."""
+    return [column.name for column in model.__table__.columns]
+

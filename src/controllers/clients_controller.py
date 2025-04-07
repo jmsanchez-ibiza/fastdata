@@ -2,9 +2,10 @@
 from fasthtml.common import *
 from src.core.html_wrappers import *
 from src.auth.login import login_required
-from src.data.utils import assign_form_data_to_model
+from src.data.utils import assign_form_data_to_model, get_model_columns, to_dict_list
 from src.data.models import Client
 from src.data.DAO_clients import ClientDAO
+from src.utils.excel import create_excel
 from src.views.utils import error_msg
 from src.views.clients_views import clients_form, clients_modal_confirmation, clients_page
 # Excel exports
@@ -99,24 +100,28 @@ class ClientsController:
         return clients_page(session=session, clients=clients, client_id=client_id, hx_swap_oob=True)
 
     def export_excel(self, session, request):
-        clients = ClientDAO().get_all()
+        columns = get_model_columns(Client)
+        clients = ClientDAO().get_all(order_by={"id": "ASC"})
+        clients_dicts = to_dict_list(clients)
 
-        wb = Workbook()
-        ws = wb.active
-        ws.title = "Clientes"
+        output = create_excel(data_list=clients_dicts, return_as_bytes=True, columns_order=columns)
 
-        # Headers
-        headers = ["ID", "Trade name", "Legal name"]
-        ws.append(headers)
+        # wb = Workbook()
+        # ws = wb.active
+        # ws.title = "Clientes"
 
-        # Data
-        for c in clients:
-            ws.append([c.id, c.clcomer, c.clname])
+        # # Headers
+        # headers = ["ID", "Trade name", "Legal name"]
+        # ws.append(headers)
+
+        # # Data
+        # for c in clients:
+        #     ws.append([c.id, c.clcomer, c.clname])
 
         # Save to memory
-        output = io.BytesIO()
-        wb.save(output)
-        output.seek(0)
+        # output = io.BytesIO()
+        # wb.save(output)
+        # output.seek(0)
 
         # Return as response to download Excel file
         return Response(
