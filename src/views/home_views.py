@@ -1,7 +1,7 @@
 from fasthtml.common import *
 from src.auth.login import is_user_admin, is_user_logged
 from src.core.html_wrappers import *
-from src.config import NAVBAR_BG_COLOR, APP_NAME
+from src.config import NAVBAR_BG_COLOR, APP_NAME, NAVBAR_FIXED_ON_TOP
 from src.utils.js_scripts import bootstrap_tooltips_js
 
 # ------------------------------------------------------------------------ #
@@ -120,7 +120,7 @@ def login_area(session):
 # Navbar
 def navbar(title, session):
     return Header(
-    Nav(id="main-navbar")(
+    Nav(id="main-navbar", cls="fixed-top" if NAVBAR_FIXED_ON_TOP else "")(
         Div(cls='container-fluid')(
             
             # Logo
@@ -182,7 +182,7 @@ def main_content():
     Div(
         id='main-content',
         cls='p-2 rounded',
-        style='background-color: gainsboro;'
+        style='background-color: gainsboro;'+'margin-top: 80px;' if NAVBAR_FIXED_ON_TOP else ''
         )(
         body_content()
     )
@@ -195,7 +195,7 @@ def footer():
             Span(cls="text-secondary")(f"© 2024 {APP_NAME}. All rights reserved."),
             Button(
                 cls="btn btn-danger p-1 m-2",
-                onclick=f"scrollToId('main-navbar')")(
+                onclick=f"scrollToId('under-navbar')")(
                     I(cls="bi-arrow-up-square"), title="Go to top..",
             )
         )
@@ -205,6 +205,7 @@ def footer():
 def home_page(session, body_content: str = ""):
     return Div(cls="")(
         navbar(APP_NAME, session),
+        Div(id="under-navbar"),
         main_content() if not body_content else body_content,
         footer(),
         helper_modal(),

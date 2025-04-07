@@ -1,3 +1,5 @@
+// DataTables initialization and event handling for HTMX
+// This script initializes DataTables on elements with the class "datatable"
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener('htmx:afterSwap', (e) => {
         console.log("📦 htmx:afterSwap event received");
@@ -83,3 +85,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+// Bootstrap 5.3.0 - Collapse
+// This script handles the collapse functionality of the Bootstrap navbar
+document.addEventListener('DOMContentLoaded', function () {
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    const navLinks = document.querySelectorAll('.navbar-collapse .nav-link, .navbar-collapse .dropdown-item');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Do not close if the click was on the dropdown button.
+            if (link.getAttribute('data-bs-toggle') === 'dropdown') {
+                return;
+            }
+
+            // Close the menu if it is expanded.
+            if (navbarCollapse.classList.contains('show')) {
+                const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                if (bsCollapse) {
+                    bsCollapse.hide();
+                }
+            }
+        });
+    });
+});
+
