@@ -37,8 +37,8 @@ if "users" in to_be_created_list:
     
     try:
         USERS = [
-            {"username": "yoss", "user_code": 1, "name": "Yoss Sanch", "email": "yoss@sanch.com", "password": "1234", "role": "admin", "active": "Y", "blocked": "N"},
-            {"username": "user", "user_code": 2, "name": "General user", "email": "userbyexample@mail.com", "password": "1111", "role": "general", "active": "Y", "blocked": "N"},
+            {"username": "admin", "user_code": 1, "name": "Admin user", "email": "admin@mail.com", "password": "12345", "role": "admin", "active": "Y", "blocked": "N"},
+            {"username": "user", "user_code": 2, "name": "General user", "email": "userbyexample@mail.com", "password": "11111", "role": "general", "active": "Y", "blocked": "N"},
         ]
         
         # Check if the table already exists, then ask if we want to create more data
@@ -46,7 +46,7 @@ if "users" in to_be_created_list:
         table_name = User.__tablename__
         register_count = dao.get_count()
         if table_name in tables_list and register_count > 0:
-            # La tabla existe y tiene registros
+            # The table exists and contains records.
             input(f"Table: {table_name} exists and contains {register_count} records.\nPress any key to continue...\nor Ctrl-C to cancel... ")
 
         for i, user in enumerate(USERS):

@@ -1,4 +1,4 @@
-/* ANIMACIÓN PARA LAS FILAS*/
+/* ANIMATION FOR ROWS*/
 @keyframes slideInFromLeft {
     0% {
       transform: translateX(-100%);
@@ -8,7 +8,7 @@
     }
   }
 
-  /* ANIMAR LA FILA */
+  /* Animate a row */
 .animado {  
   /* This section calls the slideInFromLeft animation we defined above */
   animation: 0.3s ease-out 0s 1 slideInFromLeft;
@@ -16,24 +16,24 @@
   /* padding: 30px; */
 }
 
-/* Para containers que ocupen toda la pantalla */
+/* For containers that occupy the entire screen. */
 .fill { 
   min-height: 100%;
   height: 100%;
 }
 
-/* Clase para objetos que se autodestruyen */
+/* Class for self-destructing objects. */
 .auto-destroy {
   padding: 10px;
   margin: 10px;
   /* color: white;
   background-color: lightcoral;
   border: 1px solid darkred; */
-  transition: opacity 1s ease-in-out; /* Transición de 1 segundo para el desvanecimiento */
+  transition: opacity 1s ease-in-out; /* 1-second transition for fading. */
 }
 
 
-/* PARA MOSTRAR/OCULTAR EL INDICATOR SEGÚN EL ESTADO DEL REQUEST */
+/* TO SHOW/HIDE THE INDICATOR BASED ON REQUEST STATUS. */
 .my-indicator{
   display:none;
 }
@@ -45,24 +45,24 @@
 }
 
 
-/* Ajustes personalizados para DataTables (v2 + Bootstrap 5) */
-/* Clases: .dt-length, .dt-search, .dt-info, .dt-paging, .dt-paging-button */
-/* 1. Info: más grande y bajado un poco */
+/* Custom settings for DataTables (v2 + Bootstrap 5) */  
+/* Classes: .dt-length, .dt-search, .dt-info, .dt-paging, .dt-paging-button */  
+/* 1. Info: larger and slightly lowered */
 .dt-info {
   font-size: 0.85rem !important;
   margin-top: 0.4rem !important;
   margin-bottom: 0.1rem !important;
 }
-/* 2. Ocultar "Buscar:" */
+/* 2. Hide "Search:" */
 .dt-search label {
   display: none;
 }
-/* 3. Ocultar palabra "registros" */
+/* 3. Hide the word "records" */
 .dt-length label {
   display: block;
   font-size: 0.75rem !important;
 }
-/* 4. Reducir espacio entre botones de paginación */
+/* 4. Reduce spacing between pagination buttons */
 .dt-paging-button {
   font-size: 0.70rem !important;
   padding: 0.25rem 0.15rem !important;
@@ -70,7 +70,7 @@
   z-index: 0;
 }
 
-/* 5. Cambiar color de fondo de los rows de cabecera */
+/* 5. Change background color of header rows */
 .dt-orderable-asc {
   background-color: #d5eaff !important;
 }

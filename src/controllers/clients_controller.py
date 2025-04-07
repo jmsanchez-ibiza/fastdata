@@ -89,7 +89,7 @@ class ClientsController:
             if not client_id:
                 errors["db"] = f"ERROR-DB: Deleting client: {err}"
 
-        # Si hubiera habido accion2 == "cancel" ya hubiéramos llegado aquí
+        # If there had been action2 == "cancel", we would have already reached here
 
         if errors:
             client = client or Client()
@@ -105,22 +105,23 @@ class ClientsController:
         ws = wb.active
         ws.title = "Clientes"
 
-        # Cabeceras
-        headers = ["ID", "Código", "Nombre"]
+        # Headers
+        headers = ["ID", "Trade name", "Legal name"]
         ws.append(headers)
 
-        # Datos
+        # Data
         for c in clients:
             ws.append([c.id, c.clcomer, c.clname])
 
-        # Guardar a memoria
+        # Save to memory
         output = io.BytesIO()
         wb.save(output)
         output.seek(0)
 
+        # Return as response to download Excel file
         return Response(
             content=output.read(),
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": "attachment; filename=clientes.xlsx"}
+            headers={"Content-Disposition": "attachment; filename=clients.xlsx"}
         )
 

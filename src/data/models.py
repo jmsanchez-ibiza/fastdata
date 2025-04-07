@@ -102,7 +102,8 @@ class User(BaseModel):
     
 
     def check_password(self, password: str) -> bool:
-        # Verificar si la contraseña coincide con el hash almacenado
+        # Verify if the password matches the stored hash
+        # TODO: Eliminate the password field and use only password_hash
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
    
 # CLIENTs model
@@ -159,7 +160,7 @@ class Client(BaseModel):
     @property
     def can_delete(self):
         # Can be deleted if no associated contacts exist
-        return len(self.contactos) == 0
+        return len(self.contacts) == 0
 
 class Contact(BaseModel):
     __tablename__ = 'contacts'

@@ -1,10 +1,10 @@
-# Client's controller
+# Contact's controller
 from fasthtml.common import *
 from src.core.html_wrappers import *
 from src.auth.login import login_required
-from src.data.DAO_clients import ClientDAO
 from src.data.utils import assign_form_data_to_model
 from src.data.models import Contact
+from src.data.DAO_clients import ClientDAO
 from src.data.DAO_contacts import ContactDAO
 from src.views.contacts_views import contacts_form, contacts_modal_confirmation, contacts_page
 from src.views.utils import error_msg
@@ -27,11 +27,7 @@ class ContactsController:
         self.rt("/contacts_post")(self.process_post)
 
     def list(self, session, request):
-        # try:
-        #     contacts = ContactDAO().get_all(order_by={"contact_name": "ASC"})
-        #     return contacts_page(session, contacts)
-        # except Exception as e:
-        #     return error_msg(f"ERROR: {e}")
+        # Not implemented because the contact list is retrieved on the client page
         pass
 
     def form_add(self, session, request):
@@ -56,8 +52,6 @@ class ContactsController:
 
     async def process_post(self, session, request):
         form_data = dict(await request.form())
-        # input(f"DEBUG-PAUSE: contacts_controller:process_post: form_data={form_data}")
-
         action = form_data.get("action", "")
         action2 = form_data.get("action2", "")
         action = action2 if action2 else action
@@ -93,7 +87,7 @@ class ContactsController:
             if not contact_id:
                 errors["db"] = f"ERROR-DB: Deleting contact: {err}"
 
-        # # Si hubiera habido accion2 == "cancel" ya hubiéramos llegado aquí
+        # If action2 had been "cancel", we would have already gotten here
 
         if errors:
             contact = contact or Contact()

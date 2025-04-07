@@ -5,7 +5,6 @@ from src.data.utils import assign_form_data_to_model
 from src.data.models import User
 from src.data.DAO_users import UserDAO
 from src.views.utils import error_msg
-# from src.views.users_views import form_usuarios, form_usuarios_confirmacion, lista_usuarios, navbar_botones, users_form
 from src.views.users_views import users_form, users_modal_confirmation, users_page
 
 def init_routes(rt):
@@ -56,7 +55,6 @@ class UsersController:
         user_dao = UserDAO()
         user = None
         errors = {}
-        # input(f"DEBUG-INPUT: UsersController:process_post:\n{form_data}\n{action=} {action2=}")
 
         if action == "add":
             user = User()
@@ -89,7 +87,7 @@ class UsersController:
             if not user_id:
                 errors["db"] = f"ERROR-DB: Error al borrar el usuario: {err}"
 
-        # Si hubiera habido accion2 == "cancel" ya hubiéramos llegado aquí
+        # If action2 had been "cancel", we would have already gotten here
       
         if errors:
             user = user or User()

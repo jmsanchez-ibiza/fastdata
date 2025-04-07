@@ -15,65 +15,65 @@ def client_details_form(session={}, action: str = "edit", client: Client = None,
 
         Div(cls="row")(
             Div(cls="form-group col-md-6")(
-                mk_input(id="clcomer", placeholder="Nombre comercial", value=client.clcomer if client else "", errors=errors, autofocus=True),
+                mk_input(id="clcomer", placeholder="Trade Name", value=client.clcomer if client else "", errors=errors, autofocus=True),
             ),
             Div(cls="form-group col-md-6")(
-                mk_input(id="clname", placeholder="Nombre fiscal", value=client.clname if client else "", errors=errors),
+                mk_input(id="clname", placeholder="Legal Name", value=client.clname if client else "", errors=errors),
             ),
         ),
 
         Div(cls="form-group col-md-6")(
-            mk_input(id="dni_nie_cif", placeholder="DNI/NIE/CIF", value=client.dni_nie_cif if client else "", errors=errors),
+            mk_input(id="dni_nie_cif", placeholder="DNI/NIE/CIF #", value=client.dni_nie_cif if client else "", errors=errors),
         ),
 
         Div(cls="row")(
             Div(cls="form-group col-md-6")(
-                mk_input(id="email_heading", placeholder="Email cabecera", value=client.email_heading if client else "", errors=errors),
+                mk_input(id="email_heading", placeholder="Email header.", value=client.email_heading if client else "", errors=errors),
             ),
             Div(cls="form-group col-md-6")(
-                mk_input(id="email_payment", placeholder="Email facturación", value=client.email_payment if client else "", errors=errors),
+                mk_input(id="email_payment", placeholder="Invoicing Email", value=client.email_payment if client else "", errors=errors),
             ),
         ),
 
         Div(cls="form-group")(
-            mk_input(id="email_payment_cc", placeholder="CC Email facturación", value=client.email_payment_cc if client else "", errors=errors),
+            mk_input(id="email_payment_cc", placeholder="CC Invoicing Email", value=client.email_payment_cc if client else "", errors=errors),
         ),
 
         Div(cls="row")(
             Div(cls="form-group col-md-6")(
-                mk_input(id="adress", placeholder="Dirección", value=client.adress if client else "", errors=errors),
+                mk_input(id="adress", placeholder="Adress", value=client.adress if client else "", errors=errors),
             ),
             Div(cls="form-group col-md-3")(
                 mk_input(id="cp", placeholder="CP", value=client.cp if client else "", errors=errors),
             ),
             Div(cls="form-group col-md-3")(
-                mk_input(id="city", placeholder="Ciudad", value=client.city if client else "", errors=errors),
+                mk_input(id="city", placeholder="City", value=client.city if client else "", errors=errors),
             ),
         ),
 
         Div(cls="row")(
             Div(cls="form-group col-md-6")(
-                mk_input(id="state", placeholder="Provincia", value=client.state if client else "", errors=errors),
+                mk_input(id="state", placeholder="State", value=client.state if client else "", errors=errors),
             ),
             Div(cls="form-group col-md-3")(
-                mk_input(id="country", placeholder="País", value=client.country if client else "", errors=errors),
+                mk_input(id="country", placeholder="Country", value=client.country if client else "", errors=errors),
             ),
             Div(cls="form-group col-md-3")(
-                mk_input(id="language", placeholder="Idioma", value=client.language if client else "", errors=errors),
+                mk_input(id="language", placeholder="Language", value=client.language if client else "", errors=errors),
             ),
         ),
 
         Div(cls="row")(
             Div(cls="form-group col-md-6")(
-                mk_input(id="payment_method", placeholder="Forma de pago", value=client.payment_method if client else "", errors=errors),
+                mk_input(id="payment_method", placeholder="Payment method", value=client.payment_method if client else "", errors=errors),
             ),
             Div(cls="form-group col-md-6")(
-                mk_input(id="payment_responsible", placeholder="Responsable de pago", value=client.payment_responsible if client else "", errors=errors),
+                mk_input(id="payment_responsible", placeholder="In charge of billing.", value=client.payment_responsible if client else "", errors=errors),
             ),
         ),
 
         Div(cls="form-group")(
-            mk_input(id="notes", placeholder="Notas", value=client.notes if client else "", errors=errors),
+            mk_input(id="notes", placeholder="Notes", value=client.notes if client else "", errors=errors),
         ),
 
         Div(cls="row")(
@@ -97,9 +97,9 @@ def client_details_form(session={}, action: str = "edit", client: Client = None,
                         texto_boton_accion,
                         Img(
                             id="spinner",
-                            cls="my-indicator align-self-center",  # Alineación vertical
+                            cls="my-indicator align-self-center",  # Vertical alignment.
                             src="img/ring-spinner.svg",
-                            style="height: 1.5em;"  # Alineado con el tamaño del texto
+                            style="height: 1.5em;"  # Aligned with text size.
                         ),
                     ),
                 )
@@ -221,7 +221,6 @@ def clients_modal_confirmation(client: Client = None, action: str = "", errors: 
                         hx_post="/clients_post",
                         hx_target="#client-modals-here",
                         hx_vals={"action2": "cancel"},
-                        # onclick='document.getElementById("client-modals-here").innerHTML= ""',
                     )("Cancel"),
                     Button(
                         cls="btn btn-danger px-4 my-2 mx-1",
@@ -262,7 +261,7 @@ def clients_list(session, clients, client_id: int = 0):
             ),
         ) if clients else Div(H5(cls="text-center text-danger pt-3")("No clients found")),
     
-        # Para añadir un poco de espacio al final de la tabla que lo tape el footer
+        # To add a bit of space at the end of the table that the footer covers.
         Div(cls="", style="padding: 30px;")(""),
     )
 

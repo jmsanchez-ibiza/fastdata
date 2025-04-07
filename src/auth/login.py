@@ -1,6 +1,5 @@
 from fasthtml.common import *
 from functools import wraps
-# from urllib.parse import urlencode
 from starlette.requests import Request
 from src.utils.js_scripts import auto_destroy_js
 
@@ -26,8 +25,6 @@ def login_required(func):
     def wrapper(*args, **kwargs):
         session, request, user = _get_arguments(*args)
         if not user:
-            # next_url = request.url.path  # Capturar la URL actual
-            # redir_url = f"{login_redir}?{urlencode({'next': next_url})}"
             add_toast(session, "To access this page, you must log in.", "error")
             return RedirectResponse("/", status_code=303)
 
@@ -43,16 +40,14 @@ def user_role_required(required_role: str = ""):
             session, request, user = _get_arguments(*args)
             
             if not user:
-                # next_url = request.url.path  # Capturar la URL actual
-                # redir_url = f"{login_redir}?{urlencode({'next': next_url})}"
                 return RedirectResponse("/", status_code=303)
 
             if 'role' in user and user['role'].lower().strip() != required_role.lower().strip():
                 return Div(cls="d-flex justify-content-center")(
                     H3(cls="auto-destroy btn btn-danger")(
-                        "NO tiene acceso a esta opción"
+                        "You do NOT have access to this option."
                     ),
-                    auto_destroy_js(segundos=2),
+                    auto_destroy_js(seconds=2),
                 )
 
             request.scope['user'] = user  # Pass the user to the request

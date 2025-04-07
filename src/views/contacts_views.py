@@ -39,7 +39,7 @@ def contacts_form(session={}, action: str = "edit", contact: Contact = None, cli
         ),
 
         Div(cls="form-group")(
-            mk_input(id="notes", placeholder="Notas", value=contact.notes if contact else "", errors=errors),
+            mk_input(id="notes", placeholder="Notes", value=contact.notes if contact else "", errors=errors),
         ),
 
         Div(cls="row")(
@@ -63,9 +63,9 @@ def contacts_form(session={}, action: str = "edit", contact: Contact = None, cli
                         texto_boton_accion,
                         Img(
                             id="spinner",
-                            cls="my-indicator align-self-center",  # Alineación vertical
+                            cls="my-indicator align-self-center",  # Vertical alignment.
                             src="img/ring-spinner.svg",
-                            style="height: 1.5em;"  # Alineado con el tamaño del texto
+                            style="height: 1.5em;"  # Aligned with text size.
                         ),
                     ),
                 )
@@ -164,12 +164,6 @@ def contacts_navbar(session, client_id: int = 0):
             )(
                 I(cls="bi-plus-circle text-white fs-5"),
                 Span(cls="mx-1")("Add"),
-            ),
-            Button(cls="btn btn-primary disabled")(
-                I(cls="bi-printer text-white fs-5"), Span(cls="mx-1")("Reports")
-            ),
-            Button(cls="btn btn-primary disabled")(
-                I(cls="bi-folder-symlink text-white fs-5"), Span(cls="mx-1")("Export")
             ),
         )
     )

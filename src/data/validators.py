@@ -101,18 +101,16 @@ def validate_nie_dni_cif(documento):
 
 if __name__ == "__main__":
 
-    # Ejemplos de uso
+    # Examples of use
     print(validate_email("usuario@example.com"))  # True
     print(validate_email("usuario@dominio"))     # False
     print(validate_email("usuario.dominio.com")) # False
     print(validate_email("usuario@dominio."))    # False
 
-    # Ejemplos de uso
+    # Examples of use
     print(validate_nie_dni_cif("X1234567L"))  # True (NIE válido)
     print(validate_nie_dni_cif("12345678Z"))  # True (DNI válido)
     print(validate_nie_dni_cif("A1234567C"))  # True (CIF válido)
     print(validate_nie_dni_cif("X1234567A"))  # False (NIE inválido)
     print(validate_nie_dni_cif("12345678A"))  # False (DNI inválido)
     print(validate_nie_dni_cif("A1234567D"))  # False (CIF inválido)
-    print(validate_nie_dni_cif("41448782E"))
-    print(validate_nie_dni_cif("B07937238"))

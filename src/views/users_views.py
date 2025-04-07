@@ -1,13 +1,10 @@
 from fasthtml.common import *
 from src.core.html_wrappers import *
 from src.auth.login import is_user_admin
-# from src.db.enums import NO_SI, SI_NO, USER_ROLE
 from src.data.enums import NO_YES, USER_ROLE, YES_NO
 from src.data.models import User
 from src.views.components.buttons import rowButton
 from src.views.components.forms import mk_input, mk_select
-# from src.views.components.buttons import rowButton
-# from src.views.components.forms import mk_input, mk_select
 
 
 def user_form_details(user:User=None, action:str="", errors:dict={}, session={}):
@@ -99,7 +96,6 @@ def user_form_details(user:User=None, action:str="", errors:dict={}, session={})
                     hx_post="/users_post",
                     hx_target="#user-modals-here",
                     hx_vals={"action2": "cancel"},
-                    # onclick=f"scrollToId('id-{usuario.id if usuario and usuario.id else 0}')"
                 )("Cancel"),
 
                 Button(
@@ -113,15 +109,15 @@ def user_form_details(user:User=None, action:str="", errors:dict={}, session={})
                         f"{texto_boton_accion.capitalize()}",
                         Img(
                             id="spinner",
-                            cls="my-indicator align-self-center",  # Alineación vertical
+                            cls="my-indicator align-self-center",  # Vertical alignment.
                             src="img/ring-spinner.svg",
-                            style="height: 1.5em;"  # Alineado con el tamaño del texto
+                            style="height: 1.5em;"  # Aligned with text size.
                         ),
                     ),
                 )
             ),
         ),
-    ) # Fin Form
+    ) # End of Form
 
 def users_form(session={}, action:str="edit", user:User=None, errors:dict={}):
     
@@ -198,19 +194,6 @@ def users_navbar(session):
                 I(cls="bi-plus-circle text-white fs-5"),
                 Span(cls="mx-1")("Add"),
             ),
-
-            Button(cls="btn btn-primary disabled")(
-                (
-                    I(cls="bi-printer text-white fs-5"),
-                    Span(cls="mx-1")("Reports"),
-                )
-            ),
-            Button(cls="btn btn-primary disabled")(
-                (
-                    I(cls="bi-folder-symlink text-white fs-5"),
-                    Span(cls="mx-1")("Export"),
-                )
-            ),
             
         )
     )
@@ -269,7 +252,6 @@ def users_modal_confirmation(user:User=None, action:str="", errors:dict={}):
                         hx_post="/users_post",
                         hx_target="#user-modals-here",
                         hx_vals={"action2": "cancel"},
-                        # onclick='document.getElementById("user-modals-here").innerHTML= ""',
                     )("Cancel"),
 
                     Button(
@@ -278,11 +260,10 @@ def users_modal_confirmation(user:User=None, action:str="", errors:dict={}):
                         hx_post="/users_post",
                         hx_target="#user-modals-here",
                         hx_vals=hx_vals_dict,
-                        # onclick=f"scrollToId('id-{usuario.id if usuario and usuario.id else 0}')",
                     )("Add" if action=="add" else "Save" if action=="edit" else "Delete") if not "db" in errors else "",
                 ),
 
-            ), # Fin Form
+            ), # End of Form
         )
     )
 
@@ -293,9 +274,8 @@ def users_list(session, users, user_id:int=0, hx_swap_oob:bool=False):
     return Table(
         id="users-table",
         data_page_length="10",
-        cls="table table-striped table-hover display compact datatable",  # datatable, es la clase necesaria para transformarla en DataTable
+        cls="table table-striped table-hover display compact datatable",  # datatable, is the required class to transform it into a DataTable.
         style="width: 100%; background-color: white;",
-        # hx_swap_oob="true" if hx_swap_oob else "",
         )(
         Thead(
             Tr(

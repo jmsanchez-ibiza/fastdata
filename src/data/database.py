@@ -1,6 +1,5 @@
 from contextlib import contextmanager
-from datetime import datetime
-from sqlalchemy import create_engine, event, Column, Integer, String, Enum, Text, DateTime, Boolean, ForeignKey, Float
+from sqlalchemy import create_engine
 from sqlalchemy import inspect
 from sqlalchemy.orm import sessionmaker, declarative_base
 
@@ -21,16 +20,15 @@ class Database:
         self.engine = create_engine(self.database_uri, connect_args={"check_same_thread": False})
         self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
         self.inspector = inspect(self.engine)
-        # self.Base = declarative_base()
 
 
     def _init_db(self):
-        """Crear las tablas de la base de datos según los modelos definidos"""
+        """Create the database tables according to the defined models"""
         try:
             Base.metadata.create_all(bind=self.engine)
         except Exception as e:
-            print(f"ERROR: en _init_db() -> {e}")
-            input("Pulse una tecla para continuar ...")
+            print(f"ERROR: in _init_db() -> {e}")
+            input("Press any key to continue ...")
 
     def get_inspector(self):
         return self.inspector
@@ -49,6 +47,7 @@ class Database:
         finally:
             db.close()
 
-# Instancia singleton
+# Singleton instance of the Database class to be used throughout the application
+# This is a simple way to ensure that the same instance is used everywhere
 dbase = Database()
 

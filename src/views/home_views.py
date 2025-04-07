@@ -17,7 +17,9 @@ def helper_modal():
                 ),
                 Div(cls='modal-body')(
                     Card(
-                        P("Modal body...")
+                        H5("Modal body..."),
+                        H6("This is a simple modal to show how to use it."),
+                        P("You can put any content you want here."),
                     )
                 ),
                 Div(cls='modal-footer')(
@@ -32,7 +34,7 @@ def helper_modal():
 # Options menu
 def menu(session):
     
-    # Si no se ha hecho login, presentamos la web para visitantes
+    # If not logged in, display the visitor website.
     if not is_user_logged(session):
 
         ret = Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
@@ -50,13 +52,13 @@ def menu(session):
             ),
         )
 
-    else:  # Tenemos login, ahora tratar el 'user-role'
+    else:  # We have login, now handle the 'user-role'.
         ret =  Ul(cls='navbar-nav me-auto ml-4 mb-2 mb-md-0')(
             
             Li(cls="nav-item px-1")(
                 A(cls="nav-link text-primary icon-link icon-link-hover",
                     hx_get="/users", hx_target="#main-content",
-                    title="Gestión de Usuarios.\nManage users.\nManagement of the application's user list.", data_bs_placement='bottom')(
+                    title="User Management.\nManagement of the application's user list.", data_bs_placement='bottom')(
                         I(cls="bi-person-circle text-primary"),"Users",
                     ),
             ) if is_user_admin(session) else "",   # Only showed if user has admin role
@@ -64,7 +66,7 @@ def menu(session):
             Li(cls='nav-item px-1')(
                 A(cls='nav-link text-primary icon-link icon-link-hover',
                     hx_get='/clients', hx_target='#main-content',
-                    title='Manage Customers.\nManagement of your customers.', data_bs_placement='bottom')(
+                    title='Customers Management.\nManagement of your customers.', data_bs_placement='bottom')(
                         I(cls="bi-person-lines-fill text-primary"),
                         'Customers',
                     ),
@@ -87,10 +89,11 @@ def menu(session):
 
     return ret
 
-# Zona de Login
+# Login area
+# If the user is logged in, show the logout button and the user name.
 def login_area(session):
     if is_user_logged(session):
-        # Tenemos Login, presentamos opción de Logout
+        # We are lgged in, show the logout option
         ret = A(cls='nav-link icon-link icon-link-hover pr-2',
             href="/logout",
             data_bs_toggle='tooltip',
@@ -120,17 +123,17 @@ def navbar(title, session):
     Nav(id="main-navbar")(
         Div(cls='container-fluid')(
             
-            # Logotipo
+            # Logo
             A(cls='navbar-brand', href='/home')(
-                # Img(src='/static/img/icon.png', alt='Logo', cls='mr-1', height=48, width=48),
                 I(cls="bi bi-recycle fs-1 fs-bold text-primary"),
             ),
 
-            # Nombre de la app
+            # App's name
             A(title, href='/home', cls='navbar-brand ml-0 mr-4 text-primary fs-2 fw-bold'),
     
 
-            # Botón Hamburger
+            # 'Hamburger' menu button
+            # This button is only shown on small screens.
             Button(
                 type='button',
                 data_bs_toggle='collapse', data_bs_target='#my-navbar',
@@ -141,14 +144,13 @@ def navbar(title, session):
 
             Div(id='my-navbar', cls='collapse navbar-collapse w-full')(
                 
-                # Menú de opciones
+                # Options menu
+                # This is the main menu of the application.
                 menu(session),
                 
                 # Login Area
                 login_area(session),
                 
-                # Fin zona de Login
-
             ),
         )
     )
@@ -167,7 +169,8 @@ def body_content():
         P("We use cutting-edge technology and state-of-the-art equipment to deliver exceptional results in every project. Innovation and precision at your home's service."),
 
         P(
-            # Open Modal Form
+            # Open Modal Form Example
+            # This is a simple modal to show how to use it.
             Button('Contact us', type='button', data_bs_toggle='modal', data_bs_target='#exampleModal', cls='btn btn-primary'),
         ),
     )
@@ -180,7 +183,6 @@ def main_content():
         id='main-content',
         cls='p-2 rounded',
         style='background-color: gainsboro;'
-        # style='background-color: white;'
         )(
         body_content()
     )
@@ -190,11 +192,11 @@ def footer():
     # Footer
     return Footer(cls="p-1", style=f"position:fixed; left: 0; bottom: 0; width: 100%; text-align: center; background-color: {NAVBAR_BG_COLOR};")(
         Div(cls="d-flex justify-content-around")(
-            Span(cls="text-secondary")(f"© 2024 {APP_NAME}. Todos los derechos reservados."),
+            Span(cls="text-secondary")(f"© 2024 {APP_NAME}. All rights reserved."),
             Button(
                 cls="btn btn-danger p-1 m-2",
                 onclick=f"scrollToId('main-navbar')")(
-                    I(cls="bi-arrow-up-square"), title="Subir al principio.",
+                    I(cls="bi-arrow-up-square"), title="Go to top..",
             )
         )
     )

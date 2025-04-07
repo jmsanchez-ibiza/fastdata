@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener('htmx:afterSwap', (e) => {
-        console.log("📦 Evento htmx:afterSwap recibido");
+        console.log("📦 htmx:afterSwap event received");
 
         const tables = document.querySelectorAll(".datatable");
-        console.log("🔍 Buscando tablas .datatable...");
+        console.log("🔍 Looking for .datatable...");
 
         tables.forEach(table => {
-            console.log(`➡️ Inicializando DataTable para: #${table.id}`);
+            console.log(`➡️ Init DataTable for: #${table.id}`);
             
             if ($.fn.DataTable.isDataTable(table)) {
-                console.warn("⚠️ Tabla ya inicializada. Destruyendo instancia existente.");
+                console.warn("⚠️ Table already initialized. Destroying existing instance.");
 
                 $(table).DataTable().destroy();
 
@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const $table = $(table);
+            // DataTable configuration in Spanish
             $table.DataTable({
                 renderer: 'bootstrap',
                 language: {
@@ -59,14 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 drawCallback: function () {
                     const rows = this.api().rows({ page: 'current' }).nodes();
                     rows.each(function (row) {
-                        htmx.process(row); // 🔥 esto reactiva los botones en cada fila visible
+                        htmx.process(row); // 🔥 this reactivates the buttons in each visible row
                     });
                 },
                 // dom: 'Bfrtip',
                 // buttons: [
                 //     {
                 //         extend: 'excelHtml5',
-                //         text: '<i class="bi bi-file-earmark-excel"></i> Exportar visibles',
+                //         text: '<i class="bi bi-file-earmark-excel"></i> Export records',
                 //         className: 'btn btn-success btn-sm',
                 //         exportOptions: {
                 //             modifier: {
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // ],
             });
 
-            // Foco en campo de búsqueda
+            // Focus on search field
             document.querySelector(`#${table.id}_wrapper .dt-search input`)?.focus();
         });
     });

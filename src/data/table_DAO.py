@@ -1,5 +1,5 @@
 from typing import Any, Dict, Tuple, Optional, Type, List, Union
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import joinedload
 from sqlalchemy import asc, desc
 from .database import dbase
 from .models import BaseModel
@@ -108,7 +108,7 @@ class TableDAO:
             
             return query.all()
 
-    def get_by_id(self, entity_id: int, cargar_relaciones: bool = True) -> Optional[BaseModel]:
+    def get_by_id(self, entity_id: int, load_relationships: bool = True) -> Optional[BaseModel]:
         """
         Retrieve a record by its ID.
 
@@ -120,7 +120,7 @@ class TableDAO:
             Optional[BaseModel]: The record or None if not found.
         """
         with dbase.get_connection() as db:
-            if cargar_relaciones:
+            if load_relationships:
                 return db.query(self.model).options(joinedload("*")).filter_by(id=entity_id).first()
             else:
                 return db.query(self.model).filter_by(id=entity_id).first()

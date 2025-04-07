@@ -10,7 +10,6 @@ def login_form(errors: str = ""):
                     H3(cls="text-primary fs-3")("fastDATA Login"),
                 ),
                 Div(cls="boot-modal-body")(
-                    # P(f"{errors}") if errors else "",
                     Div(cls="form-group")(
                         
                         Div(cls='form-floating')(
@@ -42,6 +41,6 @@ def login_form(errors: str = ""):
                     Button(cls="btn btn-secondary my-2 mx-2", type="button", hx_get="/", hx_target="#main-content", hx_swap="innerHTML")("Cancel"),
                     Button(cls="btn btn-primary my-2", type="submit")("Login"),
                 )
-            ) # Fin del form
+            ) # End of Form
         )
     )
