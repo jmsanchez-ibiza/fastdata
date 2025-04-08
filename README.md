@@ -23,19 +23,13 @@ Make sure you are using **Python 3.12+**.
 ### Install core dependencies:
 
 ```bash
-pip install python-dotenv python-fasthtml bcrypt sqlalchemy
+pip install python-dotenv python-fasthtml bcrypt sqlalchemy openpyxl
 ```
 
 ### (Optional) For generating sample data:
 
 ```bash
 pip install faker
-```
-
-### (Optional) For Excel export support:
-
-```bash
-pip install openpyxl
 ```
 
 ---
