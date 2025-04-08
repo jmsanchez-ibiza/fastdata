@@ -13,37 +13,6 @@ El archivo `__create_data.py` es el encargado de crear:
 
 ---
 
-## ⚙️ Estructura del Script
-
-### Creación de tablas
-Se ejecuta la instrucción de SQLAlchemy:
-
-```python
-Base.metadata.create_all(engine)
-```
-
-Esto genera automáticamente todas las tablas definidas en `models.py`.
-
----
-
-### Inserción de datos
-
-Se crean instancias de los modelos y se guardan mediante una sesión de SQLAlchemy:
-
-```python
-user = User(name="Admin", email="admin@example.com", password="admin")
-client = Client(name="Acme Corp", address="123 Calle Falsa")
-contact = Contact(name="Juan Pérez", client_id=client.id, email="jperez@acme.com")
-```
-
-Finalmente, se hace commit de todos los objetos:
-
-```python
-session.add_all([user, client, contact])
-session.commit()
-```
-
----
 
 ## 🧰 Cómo usarlo
 
@@ -59,14 +28,6 @@ Esto:
 
 ---
 
-## 📋 Datos Generados por Defecto
-
-- **Usuario**:
-  - Email: `admin@example.com`
-  - Contraseña: `admin`
-- **Clientes y contactos**: entre 3 y 5 registros de muestra
-
----
 
 ## 🎯 Utilidad
 

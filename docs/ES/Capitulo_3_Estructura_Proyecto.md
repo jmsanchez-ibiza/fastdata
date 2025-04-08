@@ -27,7 +27,7 @@ Archivo principal que inicializa la aplicación. Importa los controladores y lla
 
 ```python
 from src.controllers.clients_controller import ClientsController
-ClientsController().init_routes()
+ClientsController().init_routes(rt)
 ```
 
 ### `src/auth/`
@@ -38,30 +38,55 @@ Define las rutas de la aplicación y su lógica de control. Cada controlador ges
 
 Ejemplo:
 ```python
-@route("/users")
-def index(ctx):
+class UsersController:
+
+    def __init__(self, rt):
+        self.rt = rt
+        self.init_routes()
+
+    def init_routes(self):
+        self.rt("/users")(login_required(self.list))
+        self.rt("/users_add")(login_required(self.form_add))
+        self.rt("/users_edit/{user_id}")(login_required(self.form_edit))
+        self.rt("/users_delete/{user_id}")(login_required(self.form_delete))
+        self.rt("/users_post")(self.process_post)
+
+    def list(self, session, request):
+        try:
+            users = UserDAO().get_all(order_by={"username": "ASC"})
+            return users_page(session, users)
+        except Exception as e:
+            return error_msg(f"ERROR: {e}")
     ...
 ```
 
 ### `src/core/`
 Funciones que encapsulan lógica común, como envoltorios HTML (`html_wrappers.py`) compatibles con fasthtml.
+Esta utilidad permite personalizar el diseño de los fast-tags (ft) para cada aplicación.
 
 ### `src/data/`
 Contiene los modelos de datos y DAOs. También se encuentra aquí la configuración de SQLAlchemy y las utilidades de validación.
 
-- `models.py`: Clases base con SQLAlchemy
-- `validators.py`: Validación de entradas del usuario
-- `database.py`: Conexión con SQLite
+- `models.py`: Clases base de modelos con SQLAlchemy
+- `validators.py`: Utilidades para usar en validación de datos.
+- `database.py`: Conexión con la base de datos (en este ejemplo con SQLite)
 
 ### `src/views/`
 Las vistas son construidas con `fasthtml`. Cada archivo define funciones que generan HTML estructurado con Python.
 
 Ejemplo:
 ```python
-def user_table(users):
-    with Table():
-        for user in users:
-            Tr(Td(user.name), Td(user.email))
+def users_page(session, users, user_id:int=0, hx_swap_oob:bool=False):
+    return \
+    Div(
+        users_navbar(session),
+        Div(id="user-modals-here", hx_swap_oob="true" if hx_swap_oob else "")(""),
+        Div(id="users-list", hx_swap_oob="true" if hx_swap_oob else "")(
+            users_list(session, users, user_id=user_id),
+        )
+    )
+
+    ...
 ```
 
 ### `src/utils/`

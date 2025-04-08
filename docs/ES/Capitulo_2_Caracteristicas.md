@@ -22,10 +22,13 @@ Los contactos están relacionados jerárquicamente con los clientes y pueden edi
 ### 📤 Exportación a Excel
 - Implementado en `utils/excel.py`, usando `openpyxl`.
 - Función `export_to_excel` permite transformar listas de diccionarios en archivos `.xlsx`.
+- Es un ejemplo de cómo exportar datos a Excel y a la vez de como hacer un botón para descargar archivos.
 
 ### ⚡ Interactividad con HTMX
 - Utilizado en toda la app (`hx-get`, `hx-target`, `hx-swap`).
 - Mejora la experiencia cargando solo fragmentos del DOM.
+- Se estructura toda la aplicación como SPA (Single Page Application), se centra en una página principal y
+  el contenido se va cargando dinámicamente en el DOM.
 
 ### 🪟 Uso de Modales
 - Formularios y acciones CRUD se presentan en ventanas modales, definidos con `fasthtml`.
@@ -40,10 +43,11 @@ Los contactos están relacionados jerárquicamente con los clientes y pueden edi
 ```python
 from src.controllers.clients_controller import ClientsController
 
-ClientsController().init_routes()
+ClientsController().init_routes(rt)
 ```
 
-Esto permite una división clara del enrutamiento sin congestionar un único archivo.
+Esto permite una división clara del enrutamiento sin congestionar el archivo de inicio (main.py).
+Esto hace el código más legible y fácil de mantener, al dividir en varios archivos .py
 
 ### 🗃️ SQLAlchemy como ORM para la Base de Datos
 FastApp utiliza la librería `SQLAlchemy` para gestionar la base de datos SQLite. Gracias a esto:

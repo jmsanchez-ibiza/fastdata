@@ -11,23 +11,9 @@ Ubicados en: `static/css/`
 ### `styles.css`
 Contiene reglas personalizadas para adaptar elementos como botones, tablas y formularios a la estética del proyecto.
 
-Ejemplo:
-```css
-.table th {
-    background-color: #f8f9fa;
-}
-```
 
 ### `modals.css`
-Contiene estilos específicos para mejorar el comportamiento visual de los modales creados con Bootstrap.
-
-Ejemplo:
-```css
-.modal-body {
-    max-height: 60vh;
-    overflow-y: auto;
-}
-```
+Contiene estilos específicos para mejorar el comportamiento visual de los modales creados con en la aplicación.
 
 ---
 
@@ -39,13 +25,8 @@ FastApp utiliza íconos SVG y PNG que se muestran en botones, cabeceras o durant
 
 ### Imágenes comunes:
 - `spin-200px.svg`: Spinner animado
-- `recycle.png`: Icono para eliminar elementos
+- `recycle.png`: Icono de la aplicación.
 - `bars-spinner.svg`, `ring-spinner.svg`: Variantes visuales para carga o espera
-
-Ejemplo de uso:
-```python
-Img(_src="/static/img/spin-200px.svg", _alt="Cargando...", _class="spinner")
-```
 
 ---
 
@@ -72,13 +53,7 @@ Incluye también funciones para:
 
 ## 🧩 4. Uso en Vistas y Componentes
 
-Los archivos estáticos se enlazan automáticamente a través del sistema de rutas de `fasthtml`.
-
-Ejemplo desde `views/utils.py`:
-```python
-Link(_rel="stylesheet", _href="/static/css/styles.css")
-Script(_src="/static/js/main.js")
-```
+Los archivos estáticos se enlazan automáticamente a través del sistema de rutas de `fasthtml` desde `main.py`
 
 Esto asegura que todos los elementos visuales y scripts estén disponibles cuando se genera una vista.
 

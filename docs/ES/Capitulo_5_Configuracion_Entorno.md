@@ -67,12 +67,11 @@ Este enfoque:
 ## 🧩 Integración de Base de Datos
 
 La conexión con SQLite está definida en `src/data/database.py`:
-```python
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
-```
 
-Gracias a SQLAlchemy, esta línea puede adaptarse fácilmente a PostgreSQL o MySQL simplemente cambiando la URL en `.env`:
+Se crea una variable `dbase` (Singleton) que es accesible desde cualquier parte del código de la aplicación.
+También se usan DAOs (Data Access Objects), para hacer más fácil y encapsulado el acceso a los datos.
+
+Gracias a SQLAlchemy, la gestión de los datos de esta app pes muy fácilmente escalable y adaptable a PostgreSQL o MySQL simplemente cambiando la URL en `.env`:
 
 ```env
 DATABASE_URL=postgresql://user:pass@localhost/dbname
@@ -83,7 +82,7 @@ DATABASE_URL=postgresql://user:pass@localhost/dbname
 ## 🛠️ Otros ajustes importantes
 
 - Archivos de configuración como `.gitignore` evitan subir a Git archivos como `.env`, `.db` o `.pyc`.
-- Se recomienda usar herramientas como `pre-commit` o linters para mejorar el flujo de desarrollo.
+
 
 ---
 

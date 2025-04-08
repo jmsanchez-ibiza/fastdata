@@ -9,32 +9,57 @@ La librería central del proyecto, permite construir interfaces HTML directament
 
 Ejemplo desde `users_views.py`:
 ```python
-with Table(_class="table"):
-    for user in users:
-        Tr(Td(user.name), Td(user.email), Td(Button("Editar")))
+def users_list(session, users, user_id:int=0, hx_swap_oob:bool=False):
+
+    return Table(
+        id="users-table",
+        data_page_length="10",
+        cls="table table-striped table-hover display compact datatable",  # datatable, is the required class to transform it into a DataTable.
+        style="width: 100%; background-color: white;",
+        )(
+        Thead(
+            Tr(
+                Th(scope="col")("🛠️"),
+                Th(scope="col")("Id/Code"),
+                Th(scope="col")("Username"),
+                Th(scope="col")("Name"),
+                Th(scope="col")("Role"),
+            )
+        ),
+        Tbody()(
+            *[user_row(session, user, user_id = user_id) for user in users]
+        ),
+        Tfoot(
+            Tr(
+                Th(scope="col", cls="dt-orderable-asc")("🛠️"),
+                Th(scope="col", cls="dt-orderable-asc")("Id/Code"),
+                Th(scope="col", cls="dt-orderable-asc")("Username"),
+                Th(scope="col", cls="dt-orderable-asc")("Name"),
+                Th(scope="col", cls="dt-orderable-asc")("Role"),
+            )
+        ),
+    ) if users else Div(H5(cls="text-center text-danger pt-3")("No users found"))
+
+    ...
 ```
 
 Ventajas:
-- No se utilizan plantillas.
+- No se utilizan plantillas HTML (como en el caso de Flask o Django con Jinja2).
 - Todo el contenido HTML está definido de forma estructurada en Python.
-- Reutilización de componentes.
+- Reutilización de componentes, mediante funciones o clases.
 
 ---
 
-## 🎨 2. Bootstrap (CSS)
-Usado ampliamente en los estilos (`static/css/styles.css`) para botones, modales, tablas, formularios.
-
-Ejemplo en `components/forms.py`:
-```python
-Input(_name="email", _class="form-control")
-```
-
-Permite construir interfaces limpias, responsivas y consistentes.
+## 🎨 2. Inegración con Bootstrap (CSS)
+Mediante el uso de Script() y Link(), se puede integrar en las páginas generadas el estilo de este conococido
+framework de CSS, para crear aplicaciónes con interfaces limpias, responsivas y consistentes.
+Podemos aprovechar componentes ya diseñados en Bootstrap, como navbars, accordions, etc
 
 ---
 
 ## 📊 3. DataTables.js
-Utilizado en `main.js` para transformar tablas estáticas en dinámicas, con búsqueda, ordenamiento y paginación.
+Integración de esta librería JS con **fasthtml**.
+Configurado en `main.js` para transformar tablas estáticas en dinámicas, con búsqueda, ordenamiento y paginación.
 
 Ejemplo:
 ```javascript
@@ -64,15 +89,9 @@ Ventajas:
 
 ## 🪟 5. Modales
 FastApp está diseñado en torno a modales que encapsulan formularios y acciones.
+Lo que permite mejorar el interface con el usuario, centrando su atención y manteniendo la filosofía SPA.
 
-Ejemplo desde `users_views.py`:
-```python
-with Modal("Editar Usuario"):
-    with Form("/users/update"):
-        Input(_name="name", _value=user.name)
-```
-
-Estos modales se activan mediante HTMX.
+Estos modales se activan y se ocultan mediante HTMX.
 
 ---
 
@@ -98,7 +117,7 @@ Este enfoque mejora la organización del proyecto y facilita pruebas, mantenimie
 ---
 
 ## ⚙️ 8. JavaScript Integrado
-Aunque HTMX reduce la necesidad de JS personalizado, existen scripts en `static/js/main.js` y `utils/js_scripts.py` para:
+Aunque HTMX reduce la necesidad de JS personalizado gracias al uso de HTMX, existen scripts en `static/js/main.js` y `utils/js_scripts.py` para:
 - Activar DataTables
 - Manejar modales
 - Ejecutar acciones dinámicas
@@ -106,7 +125,7 @@ Aunque HTMX reduce la necesidad de JS personalizado, existen scripts en `static/
 ---
 
 ## 🗃️ 9. SQLAlchemy
-La capa de persistencia utiliza `SQLAlchemy` como ORM:
+La capa de persistencia y gestión de la base de datos utiliza `SQLAlchemy` como ORM:
 - Código en `data/models.py`
 - Session y conexión en `database.py`
 
